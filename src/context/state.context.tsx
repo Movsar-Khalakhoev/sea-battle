@@ -1,8 +1,8 @@
 import React from 'react'
-import { MapState } from '../models/MapState'
+import { Map } from '../models/Map'
 
 export interface IStateContext {
-  myMap: MapState
+  myMap: Map
 }
 
 export const StateContext = React.createContext<IStateContext>({
@@ -29,6 +29,7 @@ const StateContextProvider: React.FC = ({ children }) => {
           y: '2',
         },
       ],
+      destroyed: false,
     },
     {
       coords: [
@@ -37,6 +38,7 @@ const StateContextProvider: React.FC = ({ children }) => {
           y: '4',
         },
       ],
+      destroyed: false,
     },
     {
       coords: [
@@ -49,6 +51,7 @@ const StateContextProvider: React.FC = ({ children }) => {
           y: '6',
         },
       ],
+      destroyed: false,
     },
   ])
   const [rivalHits, setRivalHits] = React.useState<IStateContext['myMap']['hits']>([

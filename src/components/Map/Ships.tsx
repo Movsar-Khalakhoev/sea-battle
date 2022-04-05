@@ -2,10 +2,10 @@ import React from 'react'
 import { Circle, Group, Rect } from 'react-konva'
 import { cellSideSize } from '../../variables'
 import { horizontalCoords, verticalCoords } from '../MyMap/MyMap'
-import { MapState } from '../../models/MapState'
+import { Map } from '../../models/Map'
 
 interface ShipsProps {
-  mapState: MapState
+  mapState: Map
 }
 
 const Ships: React.FC<ShipsProps> = ({ mapState: { ships, hits } }) => {

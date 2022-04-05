@@ -6,11 +6,11 @@ import Ships from './Ships'
 import MissedHits from './MissedHits'
 import { Layer } from 'react-konva'
 import { Vector2d } from 'konva/cmj/types'
-import { MapState } from '../../models/MapState'
+import { Map } from '../../models/Map'
 
 interface MapProps {
   position?: Vector2d
-  mapState: MapState
+  mapState: Map
 }
 
 const Map: React.FC<MapProps> = ({ mapState, position }) => {
