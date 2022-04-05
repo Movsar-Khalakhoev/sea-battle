@@ -6,19 +6,23 @@ export interface MapCoord {
 }
 
 export interface IStateContext {
-  ships: {
-    coords: MapCoord[]
-  }[]
-  rivalHits: MapCoord[]
+  myMap: {
+    ships: {
+      coords: MapCoord[]
+    }[]
+    rivalHits: MapCoord[]
+  }
 }
 
 export const StateContext = React.createContext<IStateContext>({
-  ships: [],
-  rivalHits: [],
+  myMap: {
+    ships: [],
+    rivalHits: [],
+  },
 })
 
 const StateContextProvider: React.FC = ({ children }) => {
-  const [ships, setShips] = React.useState<IStateContext['ships']>([
+  const [myShips, setMyShips] = React.useState<IStateContext['myMap']['ships']>([
     {
       coords: [
         {
@@ -56,7 +60,7 @@ const StateContextProvider: React.FC = ({ children }) => {
       ],
     },
   ])
-  const [rivalHits, setRivalHits] = React.useState<IStateContext['rivalHits']>([
+  const [rivalHits, setRivalHits] = React.useState<IStateContext['myMap']['rivalHits']>([
     {
       x: 'b',
       y: '2',
@@ -87,7 +91,11 @@ const StateContextProvider: React.FC = ({ children }) => {
     },
   ])
 
-  return <StateContext.Provider value={{ ships, rivalHits }}>{children}</StateContext.Provider>
+  return (
+    <StateContext.Provider value={{ myMap: { ships: myShips, rivalHits } }}>
+      {children}
+    </StateContext.Provider>
+  )
 }
 
 export default StateContextProvider

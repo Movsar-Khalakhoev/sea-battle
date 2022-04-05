@@ -9,7 +9,9 @@ const hitShapeSideSize = 20
 interface ShipsProps {}
 
 const Ships: React.FC<ShipsProps> = () => {
-  const { ships, rivalHits } = React.useContext(StateContext)
+  const {
+    myMap: { ships, rivalHits },
+  } = React.useContext(StateContext)
 
   return (
     <Group>

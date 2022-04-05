@@ -7,7 +7,9 @@ import { horizontalCoords, verticalCoords } from './MyMap'
 interface MissedHitsProps {}
 
 const MissedHits: React.FC<MissedHitsProps> = () => {
-  const { ships, rivalHits } = React.useContext(StateContext)
+  const {
+    myMap: { ships, rivalHits },
+  } = React.useContext(StateContext)
   const missedRivalHits = React.useMemo(() => {
     return rivalHits.filter(hit => {
       const shipsCoords = ships.map(ship => ship.coords).flat()
