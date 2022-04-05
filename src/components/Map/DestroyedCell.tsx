@@ -1,8 +1,8 @@
 import React from 'react'
 import { MapCoord } from '../../models/Map'
-import { horizontalCoords, verticalCoords } from '../MyMap/MyMap'
 import { cellSideSize } from '../../variables'
 import { Group, Line, Rect } from 'react-konva'
+import { horizontalCoords, verticalCoords } from './Map'
 
 interface DestroyedCellProps {
   coord: MapCoord

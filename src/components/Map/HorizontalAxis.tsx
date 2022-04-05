@@ -1,7 +1,7 @@
 import React from 'react'
 import { Group, Rect, Text } from 'react-konva'
 import { cellSideSize } from '../../variables'
-import { horizontalCoords } from '../MyMap/MyMap'
+import { horizontalCoords } from './Map'
 
 interface HorizontalAxisProps {}
 

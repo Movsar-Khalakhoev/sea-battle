@@ -1,9 +1,10 @@
 import React from 'react'
-import { Circle, Group, Rect } from 'react-konva'
-import { cellSideSize } from '../../variables'
-import { horizontalCoords, verticalCoords } from '../MyMap/MyMap'
+import { Circle, Group } from 'react-konva'
 import { IMap } from '../../models/Map'
+import { cellSideSize } from '../../variables'
 import DestroyedCell from './DestroyedCell'
+import UndestroyedCell from './UndestroyedCell'
+import { horizontalCoords, verticalCoords } from './Map'
 
 interface ShipsProps {
   mapState: IMap
@@ -21,15 +22,7 @@ const Ships: React.FC<ShipsProps> = ({ mapState: { ships, hits } }) => {
                 {ship.destroyed ? (
                   <DestroyedCell coord={coord} />
                 ) : (
-                  <Rect
-                    key={coord.x + coord.y}
-                    x={horizontalCoords.findIndex(c => c === coord.x) * cellSideSize}
-                    y={verticalCoords.findIndex(c => c === coord.y) * cellSideSize}
-                    width={cellSideSize}
-                    height={cellSideSize}
-                    strokeWidth={1}
-                    stroke='red'
-                  />
+                  <UndestroyedCell coord={coord} />
                 )}
                 {hit && !ship.destroyed && (
                   <Circle

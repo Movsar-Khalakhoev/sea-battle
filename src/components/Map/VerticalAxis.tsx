@@ -1,7 +1,7 @@
 import React from 'react'
 import { Group, Rect, Text } from 'react-konva'
 import { cellSideSize } from '../../variables'
-import { verticalCoords } from '../MyMap/MyMap'
+import { verticalCoords } from './Map'
 
 interface VerticalAxisProps {}
 

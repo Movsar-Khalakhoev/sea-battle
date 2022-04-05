@@ -1,8 +1,8 @@
 import React from 'react'
 import { Group, Star } from 'react-konva'
 import { cellSideSize } from '../../variables'
-import { horizontalCoords, verticalCoords } from '../MyMap/MyMap'
 import { IMap } from '../../models/Map'
+import { horizontalCoords, verticalCoords } from './Map'
 
 interface MissedHitsProps {
   mapState: IMap
