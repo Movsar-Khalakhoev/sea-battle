@@ -8,7 +8,7 @@ export interface MapShip {
   destroyed: boolean
 }
 
-export interface Map {
+export interface IMap {
   ships: MapShip[]
   hits: MapCoord[]
 }

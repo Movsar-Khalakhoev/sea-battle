@@ -1,8 +1,8 @@
 import React from 'react'
-import { Map } from '../models/Map'
+import { IMap } from '../models/Map'
 
 export interface IStateContext {
-  myMap: Map
+  myMap: IMap
 }
 
 export const StateContext = React.createContext<IStateContext>({
@@ -29,7 +29,7 @@ const StateContextProvider: React.FC = ({ children }) => {
           y: '2',
         },
       ],
-      destroyed: false,
+      destroyed: true,
     },
     {
       coords: [

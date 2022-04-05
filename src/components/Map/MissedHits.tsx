@@ -2,10 +2,10 @@ import React from 'react'
 import { Group, Star } from 'react-konva'
 import { cellSideSize } from '../../variables'
 import { horizontalCoords, verticalCoords } from '../MyMap/MyMap'
-import { Map } from '../../models/Map'
+import { IMap } from '../../models/Map'
 
 interface MissedHitsProps {
-  mapState: Map
+  mapState: IMap
 }
 
 const MissedHits: React.FC<MissedHitsProps> = ({ mapState: { ships, hits } }) => {
