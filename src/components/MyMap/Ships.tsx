@@ -2,23 +2,21 @@ import React from 'react'
 import { Circle, Group, Rect } from 'react-konva'
 import { cellSideSize } from '../../variables'
 import { horizontalCoords, verticalCoords } from './MyMap'
-import { StateContext } from '../../context/state.context'
+import { MapState } from '../../models/MapState'
 
 const hitShapeSideSize = 20
 
-interface ShipsProps {}
+interface ShipsProps {
+  mapState: MapState
+}
 
-const Ships: React.FC<ShipsProps> = () => {
-  const {
-    myMap: { ships, rivalHits },
-  } = React.useContext(StateContext)
-
+const Ships: React.FC<ShipsProps> = ({ mapState: { ships, hits } }) => {
   return (
     <Group>
       {ships.map((ship, index) => (
         <Group x={cellSideSize} y={cellSideSize} key={index}>
           {ship.coords.map(coord => {
-            const hit = rivalHits.find(hit => hit.x === coord.x && hit.y === coord.y)
+            const hit = hits.find(hit => hit.x === coord.x && hit.y === coord.y)
             return (
               <React.Fragment key={coord.x + coord.y}>
                 <Rect

@@ -1,23 +1,14 @@
 import React from 'react'
-
-export interface MapCoord {
-  x: string
-  y: string
-}
+import { MapState } from '../models/MapState'
 
 export interface IStateContext {
-  myMap: {
-    ships: {
-      coords: MapCoord[]
-    }[]
-    rivalHits: MapCoord[]
-  }
+  myMap: MapState
 }
 
 export const StateContext = React.createContext<IStateContext>({
   myMap: {
     ships: [],
-    rivalHits: [],
+    hits: [],
   },
 })
 
@@ -60,7 +51,7 @@ const StateContextProvider: React.FC = ({ children }) => {
       ],
     },
   ])
-  const [rivalHits, setRivalHits] = React.useState<IStateContext['myMap']['rivalHits']>([
+  const [rivalHits, setRivalHits] = React.useState<IStateContext['myMap']['hits']>([
     {
       x: 'b',
       y: '2',
@@ -92,7 +83,7 @@ const StateContextProvider: React.FC = ({ children }) => {
   ])
 
   return (
-    <StateContext.Provider value={{ myMap: { ships: myShips, rivalHits } }}>
+    <StateContext.Provider value={{ myMap: { ships: myShips, hits: rivalHits } }}>
       {children}
     </StateContext.Provider>
   )

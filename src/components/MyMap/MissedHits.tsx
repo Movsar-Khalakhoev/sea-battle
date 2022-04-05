@@ -1,26 +1,25 @@
 import React from 'react'
-import { StateContext } from '../../context/state.context'
 import { Group, Star } from 'react-konva'
 import { cellSideSize } from '../../variables'
 import { horizontalCoords, verticalCoords } from './MyMap'
+import { MapState } from '../../models/MapState'
 
-interface MissedHitsProps {}
+interface MissedHitsProps {
+  mapState: MapState
+}
 
-const MissedHits: React.FC<MissedHitsProps> = () => {
-  const {
-    myMap: { ships, rivalHits },
-  } = React.useContext(StateContext)
-  const missedRivalHits = React.useMemo(() => {
-    return rivalHits.filter(hit => {
+const MissedHits: React.FC<MissedHitsProps> = ({ mapState: { ships, hits } }) => {
+  const missedHits = React.useMemo(() => {
+    return hits.filter(hit => {
       const shipsCoords = ships.map(ship => ship.coords).flat()
 
       return !shipsCoords.find(coord => coord.x === hit.x && coord.y === hit.y)
     })
-  }, [ships, rivalHits])
+  }, [ships, hits])
 
   return (
     <Group x={cellSideSize} y={cellSideSize}>
-      {missedRivalHits.map(hit => (
+      {missedHits.map(hit => (
         <Star
           key={hit.x + hit.y}
           numPoints={8}

@@ -4,6 +4,7 @@ import CheckeredArea from './components/CheckeredArea/CheckeredArea'
 import { cellSideSize } from './variables'
 import MyMap from './components/MyMap/MyMap'
 import { StateContext } from './context/state.context'
+import RivalMap from './components/RivalMap/RivalMap'
 
 function App() {
   const appRef = React.useRef<HTMLDivElement>(null)
@@ -33,6 +34,7 @@ function App() {
             <StateContext.Provider value={value}>
               <CheckeredArea size={stageSize} />
               <MyMap position={{ x: 5, y: 5 }} />
+              <RivalMap position={{ x: 25, y: 5 }} />
             </StateContext.Provider>
           </Stage>
         )}
