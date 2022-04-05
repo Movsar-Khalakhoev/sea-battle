@@ -14,6 +14,7 @@ const CheckeredArea: React.FC<CheckeredAreaProps> = ({ size, position }) => {
     <Layer width={size.width} height={size.height} x={position?.x} y={position?.y}>
       {Array.from({ length: size.height / cellSideSize + 1 }).map((item, index) => (
         <Line
+          key={index}
           points={[0, index * cellSideSize, size.width, index * cellSideSize]}
           stroke='blue'
           strokeWidth={1}
@@ -22,6 +23,7 @@ const CheckeredArea: React.FC<CheckeredAreaProps> = ({ size, position }) => {
       ))}
       {Array.from({ length: size.width / cellSideSize + 1 }).map((item, index) => (
         <Line
+          key={index}
           points={[index * cellSideSize, 0, index * cellSideSize, size.height]}
           stroke='blue'
           strokeWidth={1}
