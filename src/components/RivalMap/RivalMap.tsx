@@ -8,9 +8,9 @@ interface RivalMapProps {
 }
 
 const RivalMap: React.FC<RivalMapProps> = ({ position }) => {
-  const { myMap } = React.useContext(StateContext)
+  const { rivalMap } = React.useContext(StateContext)
 
-  return <Map position={position} mapState={myMap} />
+  return <Map position={position} mapState={rivalMap} />
 }
 
 export default RivalMap
