@@ -1,15 +1,15 @@
 import React from 'react'
 import { Group, Rect, Text } from 'react-konva'
 import { cellSideSize } from '../../variables'
-import { horizontalCoords } from './MyMap'
+import { verticalCoords } from '../MyMap/MyMap'
 
-interface HorizontalAxisProps {}
+interface VerticalAxisProps {}
 
-const HorizontalAxis: React.FC<HorizontalAxisProps> = () => {
+const VerticalAxis: React.FC<VerticalAxisProps> = () => {
   return (
     <Group>
-      {horizontalCoords.map((coord, index) => (
-        <Group x={cellSideSize * (index + 1)} y={0} key={index}>
+      {verticalCoords.map((coord, index) => (
+        <Group x={0} y={cellSideSize * (index + 1)} key={index}>
           <Rect width={cellSideSize} height={cellSideSize} strokeWidth={1} stroke='red' />
           <Text
             text={coord}
@@ -25,4 +25,4 @@ const HorizontalAxis: React.FC<HorizontalAxisProps> = () => {
   )
 }
 
-export default HorizontalAxis
+export default VerticalAxis

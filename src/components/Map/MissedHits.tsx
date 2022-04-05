@@ -1,7 +1,7 @@
 import React from 'react'
 import { Group, Star } from 'react-konva'
 import { cellSideSize } from '../../variables'
-import { horizontalCoords, verticalCoords } from './MyMap'
+import { horizontalCoords, verticalCoords } from '../MyMap/MyMap'
 import { MapState } from '../../models/MapState'
 
 interface MissedHitsProps {
@@ -22,9 +22,9 @@ const MissedHits: React.FC<MissedHitsProps> = ({ mapState: { ships, hits } }) =>
       {missedHits.map(hit => (
         <Star
           key={hit.x + hit.y}
-          numPoints={8}
-          innerRadius={3}
-          outerRadius={10}
+          numPoints={Math.floor(cellSideSize / 4)}
+          innerRadius={cellSideSize / 9}
+          outerRadius={cellSideSize / 3}
           strokeWidth={1}
           stroke='red'
           x={horizontalCoords.findIndex(c => c === hit.x) * cellSideSize + cellSideSize / 2}

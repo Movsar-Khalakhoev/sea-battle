@@ -1,10 +1,8 @@
 import React from 'react'
 import { Circle, Group, Rect } from 'react-konva'
 import { cellSideSize } from '../../variables'
-import { horizontalCoords, verticalCoords } from './MyMap'
+import { horizontalCoords, verticalCoords } from '../MyMap/MyMap'
 import { MapState } from '../../models/MapState'
-
-const hitShapeSideSize = 20
 
 interface ShipsProps {
   mapState: MapState
@@ -30,7 +28,7 @@ const Ships: React.FC<ShipsProps> = ({ mapState: { ships, hits } }) => {
                 />
                 {hit && (
                   <Circle
-                    radius={hitShapeSideSize / 2}
+                    radius={cellSideSize / 3}
                     stroke='red'
                     strokeWidth={1}
                     x={
