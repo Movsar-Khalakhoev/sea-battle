@@ -1,1 +1,1 @@
-export const cellSideSize = 20
+export const cellSideSize = 30
