@@ -5,6 +5,7 @@ import { Vector2d } from 'konva/cmj/types'
 import VerticalAxis from './VerticalAxis'
 import HorizontalAxis from './HorizontalAxis'
 import Ships from './Ships'
+import MissedHits from './MissedHits'
 
 export const horizontalCoords = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
 export const verticalCoords = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -19,6 +20,7 @@ const MyMap: React.FC<MyMapProps> = ({ position }) => {
       <HorizontalAxis />
       <VerticalAxis />
       <Ships />
+      <MissedHits />
     </Layer>
   )
 }
