@@ -23,14 +23,14 @@ export interface MapPositionedShip {
   id: string
 }
 
-const position = { x: 2, y: 1 }
+const position = { x: 1, y: 1 }
 
 interface MyMapInitializerProps {}
 
 const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
   const [size] = React.useState<Size>({
-    height: cellSideSize * 21,
-    width: cellSideSize * 15,
+    height: cellSideSize * 20,
+    width: cellSideSize * 13,
   })
   const positionedShipsLayerRef = React.useRef<Konva.Layer>(null)
   const [mapShips, setMapShips] = React.useState<MapShip[]>([])
@@ -233,19 +233,19 @@ const _positionedShips: MapPositionedShip[] = [
   {
     coords: [
       {
-        x: 3,
+        x: 2,
         y: 13,
       },
       {
-        x: 3,
+        x: 2,
         y: 14,
       },
       {
-        x: 3,
+        x: 2,
         y: 15,
       },
       {
-        x: 3,
+        x: 2,
         y: 16,
       },
     ],
@@ -254,15 +254,15 @@ const _positionedShips: MapPositionedShip[] = [
   {
     coords: [
       {
-        x: 5,
+        x: 4,
         y: 13,
       },
       {
-        x: 5,
+        x: 4,
         y: 14,
       },
       {
-        x: 5,
+        x: 4,
         y: 15,
       },
     ],
@@ -271,15 +271,15 @@ const _positionedShips: MapPositionedShip[] = [
   {
     coords: [
       {
-        x: 7,
+        x: 6,
         y: 13,
       },
       {
-        x: 7,
+        x: 6,
         y: 14,
       },
       {
-        x: 7,
+        x: 6,
         y: 15,
       },
     ],
@@ -288,11 +288,11 @@ const _positionedShips: MapPositionedShip[] = [
   {
     coords: [
       {
-        x: 9,
+        x: 8,
         y: 13,
       },
       {
-        x: 9,
+        x: 8,
         y: 14,
       },
     ],
@@ -301,11 +301,11 @@ const _positionedShips: MapPositionedShip[] = [
   {
     coords: [
       {
-        x: 11,
+        x: 10,
         y: 13,
       },
       {
-        x: 11,
+        x: 10,
         y: 14,
       },
     ],
@@ -314,11 +314,11 @@ const _positionedShips: MapPositionedShip[] = [
   {
     coords: [
       {
-        x: 11,
+        x: 10,
         y: 16,
       },
       {
-        x: 11,
+        x: 10,
         y: 17,
       },
     ],
@@ -327,7 +327,7 @@ const _positionedShips: MapPositionedShip[] = [
   {
     coords: [
       {
-        x: 9,
+        x: 8,
         y: 16,
       },
     ],
@@ -336,7 +336,7 @@ const _positionedShips: MapPositionedShip[] = [
   {
     coords: [
       {
-        x: 7,
+        x: 6,
         y: 17,
       },
     ],
@@ -345,7 +345,7 @@ const _positionedShips: MapPositionedShip[] = [
   {
     coords: [
       {
-        x: 5,
+        x: 4,
         y: 17,
       },
     ],
@@ -354,7 +354,7 @@ const _positionedShips: MapPositionedShip[] = [
   {
     coords: [
       {
-        x: 3,
+        x: 2,
         y: 18,
       },
     ],
