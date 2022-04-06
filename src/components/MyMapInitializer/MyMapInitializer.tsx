@@ -255,15 +255,15 @@ const _positionedShips: MapPositionedShip[] = [
     coords: [
       {
         x: 5,
-        y: 19,
+        y: 13,
       },
       {
-        x: 6,
-        y: 19,
+        x: 5,
+        y: 14,
       },
       {
-        x: 7,
-        y: 19,
+        x: 5,
+        y: 15,
       },
     ],
     id: uuidv4(),
