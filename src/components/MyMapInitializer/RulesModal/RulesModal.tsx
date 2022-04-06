@@ -9,7 +9,11 @@ const RulesModal: React.FC<RulesModalProps> = () => {
   const { rulesModalOpened, setRulesModelOpened } = React.useContext(MyMapInitializerContext)
 
   return (
-    <Modal opened={rulesModalOpened} onClose={() => setRulesModelOpened(false)}>
+    <Modal
+      opened={rulesModalOpened}
+      onClose={() => setRulesModelOpened(false)}
+      className={styles.modal}
+    >
       <h4>Некоторые правила:</h4>
       <ol className={styles.rulesList}>
         <li className={styles.rulesListItem}>
