@@ -1,106 +1,60 @@
 import React from 'react'
 import { IMap, MapCoord, MapShip } from '../models/Map'
-import { v4 as uuidv4 } from 'uuid'
+
+export type Step = 'register' | 'initializer' | 'game'
 
 export interface IStateContext {
+  step: Step
+  setStep: React.Dispatch<React.SetStateAction<Step>>
+
   myMap: IMap
+  setMyMapShips: React.Dispatch<React.SetStateAction<MapShip[]>>
+  setMyMapHits: React.Dispatch<React.SetStateAction<MapCoord[]>>
+
   rivalMap: IMap
+  setRivalMapShips: React.Dispatch<React.SetStateAction<MapShip[]>>
+  setRivalMapHits: React.Dispatch<React.SetStateAction<MapCoord[]>>
 }
 
 export const StateContext = React.createContext<IStateContext>({
+  step: 'register',
+  setStep: () => {},
+
   myMap: {
     ships: [],
     hits: [],
   },
+  setMyMapShips: () => {},
+  setMyMapHits: () => {},
+
   rivalMap: {
     ships: [],
     hits: [],
   },
+  setRivalMapShips: () => {},
+  setRivalMapHits: () => {},
 })
 
 const StateContextProvider: React.FC = ({ children }) => {
-  const [myShips, setMyShips] = React.useState<MapShip[]>([
-    {
-      coords: [
-        {
-          x: 'b',
-          y: '2',
-        },
-        {
-          x: 'c',
-          y: '2',
-        },
-        {
-          x: 'd',
-          y: '2',
-        },
-      ],
-      destroyed: true,
-      id: uuidv4(),
-    },
-    {
-      coords: [
-        {
-          x: 'g',
-          y: '4',
-        },
-      ],
-      destroyed: false,
-      id: uuidv4(),
-    },
-    {
-      coords: [
-        {
-          x: 'f',
-          y: '5',
-        },
-        {
-          x: 'f',
-          y: '6',
-        },
-      ],
-      destroyed: false,
-      id: uuidv4(),
-    },
-  ])
-  const [rivalHits, setRivalHits] = React.useState<MapCoord[]>([
-    {
-      x: 'b',
-      y: '2',
-    },
-    {
-      x: 'b',
-      y: '3',
-    },
-    {
-      x: 'b',
-      y: '5',
-    },
-    {
-      x: 'b',
-      y: '6',
-    },
-    {
-      x: 'b',
-      y: '7',
-    },
-    {
-      x: 'f',
-      y: '5',
-    },
-    {
-      x: 'f',
-      y: '6',
-    },
-  ])
+  const [step, setStep] = React.useState<Step>('initializer')
+  const [myShips, setMyShips] = React.useState<MapShip[]>([])
+  const [rivalHits, setRivalHits] = React.useState<MapCoord[]>([])
   const [rivalShips, setRivalShips] = React.useState<MapShip[]>([])
   const [myHits, setMyHits] = React.useState<MapCoord[]>([])
 
   return (
     <StateContext.Provider
       value={{
+        step,
+        setStep,
+
         myMap: { ships: myShips, hits: rivalHits },
+        setMyMapShips: setMyShips,
+        setMyMapHits: setRivalHits,
+
         rivalMap: { ships: rivalShips, hits: myHits },
+        setRivalMapShips: setRivalShips,
+        setRivalMapHits: setMyHits,
       }}
     >
       {children}
