@@ -1,6 +1,6 @@
 import React from 'react'
 import { Circle, Group } from 'react-konva'
-import { IMap } from '../../models/Map'
+import { IMap, MapShip } from '../../models/Map'
 import { cellSideSize } from '../../variables'
 import DestroyedCell from './DestroyedCell'
 import UndestroyedCell from './UndestroyedCell'
@@ -8,13 +8,21 @@ import { horizontalCoords, verticalCoords } from './Map'
 
 interface ShipsProps {
   mapState: IMap
+  onShipClick?: (ship: MapShip) => void
 }
 
-const Ships: React.FC<ShipsProps> = ({ mapState: { ships, hits } }) => {
+const Ships: React.FC<ShipsProps> = ({ mapState: { ships, hits }, onShipClick }) => {
   return (
     <Group>
       {ships.map((ship, index) => (
-        <Group x={cellSideSize} y={cellSideSize} key={index} opacity={ship.destroyed ? 0.6 : 1}>
+        <Group
+          x={cellSideSize}
+          y={cellSideSize}
+          key={index}
+          opacity={ship.destroyed ? 0.6 : 1}
+          onClick={() => onShipClick && onShipClick(ship)}
+          onTap={() => onShipClick && onShipClick(ship)}
+        >
           {ship.coords.map(coord => {
             const hit = hits.find(hit => hit.x === coord.x && hit.y === coord.y)
             return (

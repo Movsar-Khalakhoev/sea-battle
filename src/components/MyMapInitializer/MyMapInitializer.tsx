@@ -121,6 +121,13 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
     )
   }
 
+  const onMapShipClick = (ship: MapShip) => {
+    setMapShips(prev => prev.filter(sh => sh.id !== ship.id))
+
+    const positionedShip = _positionedShips.find(sh => sh.id === ship.id)
+    if (positionedShip) setPositionedShips(prev => [...prev, positionedShip])
+  }
+
   return (
     <StateContext.Consumer>
       {value => (
@@ -133,7 +140,7 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
               width={(horizontalCoords.length + 1) * cellSideSize}
               height={(verticalCoords.length + 1) * cellSideSize}
             >
-              <Ships mapState={{ ships: mapShips, hits: [] }} />
+              <Ships mapState={{ ships: mapShips, hits: [] }} onShipClick={onMapShipClick} />
             </Layer>
             <Layer
               x={(position?.x || 0) * cellSideSize}
