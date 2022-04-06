@@ -1,6 +1,7 @@
 import React from 'react'
 import { MapShip } from '../models/Map'
 import { v4 as uuidv4 } from 'uuid'
+import { defaultCellSideSize } from '../variables'
 
 export const _positionedShips: MapPositionedShip[] = [
   {
@@ -162,6 +163,9 @@ export interface IMyMapInitializerContext {
 
   rulesModalOpened: boolean
   setRulesModelOpened: React.Dispatch<React.SetStateAction<boolean>>
+
+  initializerCellSideSize: number
+  setInitializerCellSideSize: React.Dispatch<React.SetStateAction<number>>
 }
 
 export const MyMapInitializerContext = React.createContext<IMyMapInitializerContext>({
@@ -176,6 +180,9 @@ export const MyMapInitializerContext = React.createContext<IMyMapInitializerCont
 
   rulesModalOpened: false,
   setRulesModelOpened: () => {},
+
+  initializerCellSideSize: defaultCellSideSize,
+  setInitializerCellSideSize: () => {},
 })
 
 interface MyMapInitializerContextProps {}
@@ -188,6 +195,7 @@ const MyMapInitializerContextProvider: React.FC<MyMapInitializerContextProps> = 
     wrongPosition: boolean
   } | null>(null)
   const [rulesModalOpened, setRulesModelOpened] = React.useState(false)
+  const [initializerCellSideSize, setInitializerCellSideSize] = React.useState(defaultCellSideSize)
 
   return (
     <MyMapInitializerContext.Provider
@@ -200,6 +208,8 @@ const MyMapInitializerContextProvider: React.FC<MyMapInitializerContextProps> = 
         setConjecturalShip,
         rulesModalOpened,
         setRulesModelOpened,
+        initializerCellSideSize,
+        setInitializerCellSideSize,
       }}
     >
       {children}

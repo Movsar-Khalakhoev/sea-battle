@@ -1,10 +1,12 @@
 import React from 'react'
 import { Group, Rect, Text } from 'react-konva'
-import { cellSideSize, horizontalCoords } from '../../variables'
+import { defaultCellSideSize, horizontalCoords } from '../../variables'
 
-interface HorizontalAxisProps {}
+interface HorizontalAxisProps {
+  cellSideSize?: number
+}
 
-const HorizontalAxis: React.FC<HorizontalAxisProps> = () => {
+const HorizontalAxis: React.FC<HorizontalAxisProps> = ({ cellSideSize = defaultCellSideSize }) => {
   return (
     <Group>
       {horizontalCoords.map((coord, index) => (

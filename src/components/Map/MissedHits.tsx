@@ -1,6 +1,6 @@
 import React from 'react'
 import { Group, Star } from 'react-konva'
-import { cellSideSize, horizontalCoords, verticalCoords } from '../../variables'
+import { defaultCellSideSize, horizontalCoords, verticalCoords } from '../../variables'
 import { IMap } from '../../models/Map'
 
 interface MissedHitsProps {
@@ -17,17 +17,23 @@ const MissedHits: React.FC<MissedHitsProps> = ({ mapState: { ships, hits } }) =>
   }, [ships, hits])
 
   return (
-    <Group x={cellSideSize} y={cellSideSize}>
+    <Group x={defaultCellSideSize} y={defaultCellSideSize}>
       {missedHits.map(hit => (
         <Star
           key={hit.x + hit.y}
-          numPoints={Math.floor(cellSideSize / 4)}
-          innerRadius={cellSideSize / 9}
-          outerRadius={cellSideSize / 3}
+          numPoints={Math.floor(defaultCellSideSize / 4)}
+          innerRadius={defaultCellSideSize / 9}
+          outerRadius={defaultCellSideSize / 3}
           strokeWidth={1}
           stroke='red'
-          x={horizontalCoords.findIndex(c => c === hit.x) * cellSideSize + cellSideSize / 2}
-          y={verticalCoords.findIndex(c => c === hit.y) * cellSideSize + cellSideSize / 2}
+          x={
+            horizontalCoords.findIndex(c => c === hit.x) * defaultCellSideSize +
+            defaultCellSideSize / 2
+          }
+          y={
+            verticalCoords.findIndex(c => c === hit.y) * defaultCellSideSize +
+            defaultCellSideSize / 2
+          }
         />
       ))}
     </Group>

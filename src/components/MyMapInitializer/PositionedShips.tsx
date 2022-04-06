@@ -1,5 +1,5 @@
 import React from 'react'
-import { cellSideSize, horizontalCoords, verticalCoords } from '../../variables'
+import { defaultCellSideSize, horizontalCoords, verticalCoords } from '../../variables'
 import PositionedShip from './PositionedShip'
 import { Layer } from 'react-konva'
 import { Vector2d } from 'konva/cmj/types'
@@ -10,9 +10,13 @@ import { MapCoord } from '../../models/Map'
 
 interface PositionedShipsProps {
   position?: Vector2d
+  cellSideSize?: number
 }
 
-const PositionedShips: React.FC<PositionedShipsProps> = ({ position }) => {
+const PositionedShips: React.FC<PositionedShipsProps> = ({
+  position,
+  cellSideSize = defaultCellSideSize,
+}) => {
   const {
     mapShips,
     setMapShips,
@@ -137,6 +141,7 @@ const PositionedShips: React.FC<PositionedShipsProps> = ({ position }) => {
         <PositionedShip
           key={ship.id}
           positionedShip={ship.coords}
+          cellSlideSize={cellSideSize}
           draggable
           onDragMove={evt => onPositionedShipDragMove(ship, evt.target.position())}
           onDragEnd={() => onPositionedDragEnd(ship.id, index)}

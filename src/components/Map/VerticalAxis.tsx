@@ -1,10 +1,12 @@
 import React from 'react'
 import { Group, Rect, Text } from 'react-konva'
-import { cellSideSize, verticalCoords } from '../../variables'
+import { defaultCellSideSize, verticalCoords } from '../../variables'
 
-interface VerticalAxisProps {}
+interface VerticalAxisProps {
+  cellSideSize?: number
+}
 
-const VerticalAxis: React.FC<VerticalAxisProps> = () => {
+const VerticalAxis: React.FC<VerticalAxisProps> = ({ cellSideSize = defaultCellSideSize }) => {
   return (
     <Group>
       {verticalCoords.map((coord, index) => (

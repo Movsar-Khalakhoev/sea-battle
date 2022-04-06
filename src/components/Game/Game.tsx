@@ -2,7 +2,7 @@ import React from 'react'
 import { Stage } from 'react-konva'
 import { StateContext } from '../../context/state.context'
 import CheckeredArea from '../CheckeredArea/CheckeredArea'
-import { cellSideSize } from '../../variables'
+import { defaultCellSideSize } from '../../variables'
 import MyMap from '../MyMap/MyMap'
 import RivalMap from '../RivalMap/RivalMap'
 
@@ -16,8 +16,8 @@ const Game: React.FC<GameProps> = () => {
 
   React.useEffect(() => {
     setStageSize({
-      height: Math.floor((window.innerHeight * 0.7) / cellSideSize) * cellSideSize,
-      width: Math.floor((window.innerWidth * 0.7) / cellSideSize) * cellSideSize,
+      height: Math.floor((window.innerHeight * 0.7) / defaultCellSideSize) * defaultCellSideSize,
+      width: Math.floor((window.innerWidth * 0.7) / defaultCellSideSize) * defaultCellSideSize,
     })
   }, [])
 

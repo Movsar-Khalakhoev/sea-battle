@@ -1,5 +1,5 @@
 import React from 'react'
-import { cellSideSize, horizontalCoords, verticalCoords } from '../../variables'
+import { defaultCellSideSize, horizontalCoords, verticalCoords } from '../../variables'
 import Ships from '../Map/Ships'
 import { Layer } from 'react-konva'
 import { _positionedShips, MyMapInitializerContext } from '../../context/myMapInitializer.context'
@@ -8,9 +8,10 @@ import { Vector2d } from 'konva/cmj/types'
 
 interface MapShipsProps {
   position?: Vector2d
+  cellSideSize?: number
 }
 
-const MapShips: React.FC<MapShipsProps> = ({ position }) => {
+const MapShips: React.FC<MapShipsProps> = ({ position, cellSideSize = defaultCellSideSize }) => {
   const { mapShips, setMapShips, setPositionedShips } = React.useContext(MyMapInitializerContext)
 
   const onMapShipClick = (ship: MapShip) => {
@@ -27,7 +28,11 @@ const MapShips: React.FC<MapShipsProps> = ({ position }) => {
       width={(horizontalCoords.length + 1) * cellSideSize}
       height={(verticalCoords.length + 1) * cellSideSize}
     >
-      <Ships mapState={{ ships: mapShips, hits: [] }} onShipClick={onMapShipClick} />
+      <Ships
+        mapState={{ ships: mapShips, hits: [] }}
+        onShipClick={onMapShipClick}
+        cellSideSize={cellSideSize}
+      />
     </Layer>
   )
 }

@@ -1,13 +1,17 @@
 import React from 'react'
-import { cellSideSize, horizontalCoords, verticalCoords } from '../../variables'
+import { defaultCellSideSize, horizontalCoords, verticalCoords } from '../../variables'
 import { Rect } from 'react-konva'
 import { MapCoord } from '../../models/Map'
 
 interface UndestroyedCellProps {
   coord: MapCoord
+  cellSideSize?: number
 }
 
-const UndestroyedCell: React.FC<UndestroyedCellProps> = ({ coord }) => {
+const UndestroyedCell: React.FC<UndestroyedCellProps> = ({
+  coord,
+  cellSideSize = defaultCellSideSize,
+}) => {
   return (
     <Rect
       key={coord.x + coord.y}

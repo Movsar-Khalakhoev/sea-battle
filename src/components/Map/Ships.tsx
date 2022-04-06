@@ -1,16 +1,21 @@
 import React from 'react'
 import { Circle, Group } from 'react-konva'
 import { IMap, MapShip } from '../../models/Map'
-import { cellSideSize, horizontalCoords, verticalCoords } from '../../variables'
+import { defaultCellSideSize, horizontalCoords, verticalCoords } from '../../variables'
 import DestroyedCell from './DestroyedCell'
 import UndestroyedCell from './UndestroyedCell'
 
 interface ShipsProps {
   mapState: IMap
   onShipClick?: (ship: MapShip) => void
+  cellSideSize?: number
 }
 
-const Ships: React.FC<ShipsProps> = ({ mapState: { ships, hits }, onShipClick }) => {
+const Ships: React.FC<ShipsProps> = ({
+  mapState: { ships, hits },
+  onShipClick,
+  cellSideSize = defaultCellSideSize,
+}) => {
   return (
     <Group>
       {ships.map((ship, index) => (
@@ -27,9 +32,9 @@ const Ships: React.FC<ShipsProps> = ({ mapState: { ships, hits }, onShipClick })
             return (
               <React.Fragment key={coord.x + coord.y}>
                 {ship.destroyed ? (
-                  <DestroyedCell coord={coord} />
+                  <DestroyedCell coord={coord} cellSideSize={cellSideSize} />
                 ) : (
-                  <UndestroyedCell coord={coord} />
+                  <UndestroyedCell coord={coord} cellSideSize={cellSideSize} />
                 )}
                 {hit && !ship.destroyed && (
                   <Circle

@@ -1,5 +1,5 @@
 import React from 'react'
-import { cellSideSize, horizontalCoords, verticalCoords } from '../../variables'
+import { defaultCellSideSize, horizontalCoords, verticalCoords } from '../../variables'
 import { Group, Layer } from 'react-konva'
 import PositionedShip from './PositionedShip'
 import { Vector2d } from 'konva/cmj/types'
@@ -7,9 +7,13 @@ import { MyMapInitializerContext } from '../../context/myMapInitializer.context'
 
 interface ConjecturalShipProps {
   position?: Vector2d
+  cellSideSize?: number
 }
 
-const ConjecturalShip: React.FC<ConjecturalShipProps> = ({ position }) => {
+const ConjecturalShip: React.FC<ConjecturalShipProps> = ({
+  position,
+  cellSideSize = defaultCellSideSize,
+}) => {
   const { conjecturalShip } = React.useContext(MyMapInitializerContext)
 
   return (
@@ -24,6 +28,7 @@ const ConjecturalShip: React.FC<ConjecturalShipProps> = ({ position }) => {
           <PositionedShip
             positionedShip={conjecturalShip.ship.coords}
             filled={conjecturalShip.wrongPosition ? 'red' : 'green'}
+            cellSlideSize={cellSideSize}
           />
         </Group>
       )}

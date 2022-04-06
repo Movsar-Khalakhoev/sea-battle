@@ -2,14 +2,19 @@ import React from 'react'
 import { Layer, Line } from 'react-konva'
 import { Size } from '../../models/Size'
 import { Vector2d } from 'konva/cmj/types'
-import { cellSideSize } from '../../variables'
+import { defaultCellSideSize } from '../../variables'
 
 interface CheckeredAreaProps {
   size: Size
   position?: Vector2d
+  cellSideSize?: number
 }
 
-const CheckeredArea: React.FC<CheckeredAreaProps> = ({ size, position }) => {
+const CheckeredArea: React.FC<CheckeredAreaProps> = ({
+  size,
+  position,
+  cellSideSize = defaultCellSideSize,
+}) => {
   return (
     <Layer width={size.width} height={size.height} x={position?.x} y={position?.y}>
       {Array.from({ length: size.height / cellSideSize + 1 }).map((item, index) => (

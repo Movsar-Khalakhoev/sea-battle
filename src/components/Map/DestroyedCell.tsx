@@ -1,13 +1,17 @@
 import React from 'react'
 import { MapCoord } from '../../models/Map'
-import { cellSideSize, horizontalCoords, verticalCoords } from '../../variables'
+import { defaultCellSideSize, horizontalCoords, verticalCoords } from '../../variables'
 import { Group, Line, Rect } from 'react-konva'
 
 interface DestroyedCellProps {
   coord: MapCoord
+  cellSideSize?: number
 }
 
-const DestroyedCell: React.FC<DestroyedCellProps> = ({ coord }) => {
+const DestroyedCell: React.FC<DestroyedCellProps> = ({
+  coord,
+  cellSideSize = defaultCellSideSize,
+}) => {
   return (
     <Group
       x={horizontalCoords.findIndex(c => c === coord.x) * cellSideSize}

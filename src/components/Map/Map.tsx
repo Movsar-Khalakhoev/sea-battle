@@ -1,5 +1,5 @@
 import React from 'react'
-import { cellSideSize } from '../../variables'
+import { defaultCellSideSize } from '../../variables'
 import HorizontalAxis from './HorizontalAxis'
 import VerticalAxis from './VerticalAxis'
 import Ships from './Ships'
@@ -15,7 +15,10 @@ interface MapProps {
 
 const Map: React.FC<MapProps> = ({ mapState, position }) => {
   return (
-    <Layer x={(position?.x || 0) * cellSideSize} y={(position?.y || 0) * cellSideSize}>
+    <Layer
+      x={(position?.x || 0) * defaultCellSideSize}
+      y={(position?.y || 0) * defaultCellSideSize}
+    >
       <HorizontalAxis />
       <VerticalAxis />
       <Ships mapState={mapState} />
