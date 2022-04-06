@@ -1,7 +1,6 @@
 import React from 'react'
 import { cellSideSize } from './variables'
 import MyMapInitializer from './components/MyMapInitializer/MyMapInitializer'
-import MyMapInitializerContextProvider from './context/myMapInitializer.context'
 
 function App() {
   const appRef = React.useRef<HTMLDivElement>(null)
@@ -21,9 +20,7 @@ function App() {
 
   return (
     <div className='app' ref={appRef}>
-      <MyMapInitializerContextProvider>
-        <MyMapInitializer />
-      </MyMapInitializerContextProvider>
+      <MyMapInitializer />
       {/*<StateContext.Consumer>*/}
       {/*  {value => (*/}
       {/*    <Stage*/}
