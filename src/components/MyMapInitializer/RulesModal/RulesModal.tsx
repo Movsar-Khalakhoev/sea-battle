@@ -14,7 +14,7 @@ const RulesModal: React.FC<RulesModalProps> = () => {
       onClose={() => setRulesModelOpened(false)}
       className={styles.modal}
     >
-      <h4>Некоторые правила:</h4>
+      <h4 className={styles.header}>Некоторые правила:</h4>
       <ol className={styles.rulesList}>
         <li className={styles.rulesListItem}>
           Корабли не могут стоять рядом друг с другом. <br />
