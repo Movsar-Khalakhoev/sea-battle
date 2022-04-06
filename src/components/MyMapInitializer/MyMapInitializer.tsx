@@ -214,40 +214,6 @@ const _positionedShips: MapPositionedShip[] = [
   {
     coords: [
       {
-        x: 7,
-        y: 13,
-      },
-      {
-        x: 7,
-        y: 14,
-      },
-      {
-        x: 7,
-        y: 15,
-      },
-    ],
-    id: uuidv4(),
-  },
-  {
-    coords: [
-      {
-        x: 7,
-        y: 13,
-      },
-      {
-        x: 7,
-        y: 14,
-      },
-      {
-        x: 7,
-        y: 15,
-      },
-    ],
-    id: uuidv4(),
-  },
-  {
-    coords: [
-      {
         x: 9,
         y: 13,
       },
