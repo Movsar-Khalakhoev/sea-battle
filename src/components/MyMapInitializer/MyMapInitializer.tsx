@@ -1,5 +1,5 @@
 import React from 'react'
-import { Group, Layer, Stage } from 'react-konva'
+import { Group, Layer, Rect, Stage } from 'react-konva'
 import { cellSideSize } from '../../variables'
 import CheckeredArea from '../CheckeredArea/CheckeredArea'
 import { Size } from '../../models/Size'
@@ -9,6 +9,8 @@ import VerticalAxis from '../Map/VerticalAxis'
 import { IMap, MapCoord } from '../../models/Map'
 import { horizontalCoords, verticalCoords } from '../Map/Map'
 import PositionedShip from './PositionedShip'
+import { Vector2d } from 'konva/cmj/types'
+import Konva from 'konva'
 
 export interface MapPositionedCoord {
   x: number
@@ -24,8 +26,45 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
     height: cellSideSize * 21,
     width: cellSideSize * 15,
   })
+  const rectStage = React.useRef<Konva.Rect>(null)
   const [ships, setShips] = React.useState(defaultMap.ships)
   const [editableShip, setEditableShip] = React.useState<MapPositionedCoord[] | null>(null)
+  const [conjecturalShip, setConjecturalShip] = React.useState<MapPositionedCoord[]>([])
+
+  const onPositionedShipDragMove = (ship: MapPositionedCoord[], position: Vector2d) => {
+    const firstCell = ship.reduce((first, sh) => (sh.y < first.y ? sh : first), ship[0])
+    const isHorizontal = ship.length >= 2 ? ship[0].y === ship[1].y : true
+
+    const xPosition = Math.round((position.x + (firstCell.x - 1) * cellSideSize) / cellSideSize)
+    const yPosition = Math.round((position.y + (firstCell.y - 1) * cellSideSize) / cellSideSize)
+
+    const newShip = sortShipCells(ship).map((coord, index) => {
+      const horizontalIndex = isHorizontal ? index : 0
+      const verticalIndex = isHorizontal ? 0 : index
+      const x = coord.x + (xPosition - firstCell.x)
+      const y = coord.y + (yPosition - firstCell.y)
+      return {
+        x:
+          x < 1 + horizontalIndex ||
+          x > horizontalCoords.length + horizontalIndex - (isHorizontal ? ship.length - 1 : 0)
+            ? x < 1 + horizontalIndex
+              ? 1 + horizontalIndex
+              : horizontalCoords.length + horizontalIndex - (isHorizontal ? ship.length - 1 : 0)
+            : x,
+        y:
+          y < 1 + verticalIndex ||
+          y > verticalCoords.length + verticalIndex - (isHorizontal ? 0 : ship.length - 1)
+            ? y < 1 + verticalIndex
+              ? 1 + verticalIndex
+              : verticalCoords.length + verticalIndex - (isHorizontal ? 0 : ship.length - 1)
+            : y,
+      }
+    })
+
+    if (JSON.stringify(newShip) !== JSON.stringify(sortShipCells(conjecturalShip))) {
+      setConjecturalShip(newShip)
+    }
+  }
 
   return (
     <StateContext.Consumer>
@@ -48,14 +87,35 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
                 </Group>
               )}
             </Layer>
+            <Layer
+              x={(position?.x || 0) * cellSideSize}
+              y={(position?.y || 0) * cellSideSize}
+              width={(horizontalCoords.length + 1) * cellSideSize}
+              height={(verticalCoords.length + 1) * cellSideSize}
+            >
+              <Group x={cellSideSize} y={cellSideSize}>
+                <PositionedShip positionedShip={conjecturalShip} filled />
+              </Group>
+            </Layer>
             <Layer x={(position?.x || 0) * cellSideSize} y={(position?.y || 0) * cellSideSize}>
               <HorizontalAxis />
               <VerticalAxis />
-              {/*{ships.map((ship, index) => (*/}
-              {/*  <Ship key={index} ship={ship} onClick={() => onShipClick(index)} />*/}
-              {/*))}*/}
-              {positionedShips.map(ship => (
-                <PositionedShip positionedShip={ship} />
+              <Rect
+                ref={rectStage}
+                x={0}
+                y={0}
+                width={(horizontalCoords.length + 1) * cellSideSize}
+                height={(verticalCoords.length + 1) * cellSideSize}
+                strokeWidth={1}
+                stroke='blue'
+              />
+              {positionedShips.map((ship, index) => (
+                <PositionedShip
+                  key={index}
+                  positionedShip={ship}
+                  draggable
+                  onDragMove={evt => onPositionedShipDragMove(ship, evt.target.position())}
+                />
               ))}
             </Layer>
           </StateContext.Provider>
@@ -79,6 +139,10 @@ const translateToPositionedCoordsAndMoveToStart = (coords: MapCoord[]): MapPosit
     x: coord.x - minXCoord + 1,
     y: coord.y - minYCoord + 1,
   }))
+}
+
+const sortShipCells = (coords: MapPositionedCoord[]) => {
+  return coords.sort((a, b) => (a.x < b.x ? -1 : 1)).sort((a, b) => (a.y < b.y ? -1 : 1))
 }
 
 const translateToShipCoords = (coords: MapPositionedCoord[]): MapCoord[] => {
@@ -110,15 +174,15 @@ const positionedShips: MapPositionedCoord[][] = [
   [
     {
       x: 5,
-      y: 13,
+      y: 19,
     },
     {
-      x: 5,
-      y: 14,
+      x: 6,
+      y: 19,
     },
     {
-      x: 5,
-      y: 15,
+      x: 7,
+      y: 19,
     },
   ],
   [
