@@ -6,6 +6,7 @@ export interface MapCoord {
 export interface MapShip {
   coords: MapCoord[]
   destroyed: boolean
+  id: string
 }
 
 export interface IMap {

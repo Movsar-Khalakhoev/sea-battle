@@ -40,7 +40,11 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
     if (conjecturalShip) {
       setMapShips(prev => [
         ...prev,
-        { coords: translateToShipCoords(conjecturalShip.coords), destroyed: false },
+        {
+          coords: translateToShipCoords(conjecturalShip.coords),
+          destroyed: false,
+          id: conjecturalShip.id,
+        },
       ])
       setConjecturalShip(null)
       setPositionedShips(prev => prev.filter((ship, i) => i !== index))
@@ -93,6 +97,30 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
     }
   }
 
+  const rotatePositionedShip = (id: string) => {
+    setPositionedShips(prev =>
+      prev.map(ship => {
+        if (ship.id !== id) return ship
+
+        const isHorizontal = ship.coords.length >= 2 ? ship.coords[0].y === ship.coords[1].y : true
+
+        const sortedShip = sortShipCells(ship)
+        return {
+          ...sortedShip,
+          coords: isHorizontal
+            ? sortedShip.coords.map((coord, index) => ({
+                x: sortedShip.coords[0].x,
+                y: sortedShip.coords[0].y + index,
+              }))
+            : sortedShip.coords.map((coord, index) => ({
+                x: sortedShip.coords[0].x + index,
+                y: sortedShip.coords[0].y,
+              })),
+        }
+      })
+    )
+  }
+
   return (
     <StateContext.Consumer>
       {value => (
@@ -129,6 +157,8 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
                   draggable
                   onDragMove={evt => onPositionedShipDragMove(ship, evt.target.position())}
                   onDragEnd={() => onPositionedDragEnd(index)}
+                  onClick={() => rotatePositionedShip(ship.id)}
+                  onTap={() => rotatePositionedShip(ship.id)}
                 />
               ))}
             </Layer>

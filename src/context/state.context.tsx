@@ -1,5 +1,6 @@
 import React from 'react'
 import { IMap, MapCoord, MapShip } from '../models/Map'
+import { v4 as uuidv4 } from 'uuid'
 
 export interface IStateContext {
   myMap: IMap
@@ -35,6 +36,7 @@ const StateContextProvider: React.FC = ({ children }) => {
         },
       ],
       destroyed: true,
+      id: uuidv4(),
     },
     {
       coords: [
@@ -44,6 +46,7 @@ const StateContextProvider: React.FC = ({ children }) => {
         },
       ],
       destroyed: false,
+      id: uuidv4(),
     },
     {
       coords: [
@@ -57,6 +60,7 @@ const StateContextProvider: React.FC = ({ children }) => {
         },
       ],
       destroyed: false,
+      id: uuidv4(),
     },
   ])
   const [rivalHits, setRivalHits] = React.useState<MapCoord[]>([
