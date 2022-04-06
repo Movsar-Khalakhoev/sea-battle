@@ -159,6 +159,9 @@ export interface IMyMapInitializerContext {
 
   conjecturalShip: ConjecturalShip
   setConjecturalShip: React.Dispatch<React.SetStateAction<ConjecturalShip>>
+
+  rulesModalOpened: boolean
+  setRulesModelOpened: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const MyMapInitializerContext = React.createContext<IMyMapInitializerContext>({
@@ -170,6 +173,9 @@ export const MyMapInitializerContext = React.createContext<IMyMapInitializerCont
 
   conjecturalShip: null,
   setConjecturalShip: () => {},
+
+  rulesModalOpened: false,
+  setRulesModelOpened: () => {},
 })
 
 interface MyMapInitializerContextProps {}
@@ -181,6 +187,7 @@ const MyMapInitializerContextProvider: React.FC<MyMapInitializerContextProps> = 
     ship: MapPositionedShip
     wrongPosition: boolean
   } | null>(null)
+  const [rulesModalOpened, setRulesModelOpened] = React.useState(false)
 
   return (
     <MyMapInitializerContext.Provider
@@ -191,6 +198,8 @@ const MyMapInitializerContextProvider: React.FC<MyMapInitializerContextProps> = 
         setPositionedShips,
         conjecturalShip,
         setConjecturalShip,
+        rulesModalOpened,
+        setRulesModelOpened,
       }}
     >
       {children}
