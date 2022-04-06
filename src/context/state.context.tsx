@@ -36,7 +36,7 @@ export const StateContext = React.createContext<IStateContext>({
 })
 
 const StateContextProvider: React.FC = ({ children }) => {
-  const [step, setStep] = React.useState<Step>('initializer')
+  const [step, setStep] = React.useState<Step>('register')
   const [myShips, setMyShips] = React.useState<MapShip[]>([])
   const [rivalHits, setRivalHits] = React.useState<MapCoord[]>([])
   const [rivalShips, setRivalShips] = React.useState<MapShip[]>([])
