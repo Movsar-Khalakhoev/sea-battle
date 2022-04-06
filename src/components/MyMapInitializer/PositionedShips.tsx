@@ -143,6 +143,7 @@ const PositionedShips: React.FC<PositionedShipsProps> = ({
           positionedShip={ship.coords}
           cellSlideSize={cellSideSize}
           draggable
+          fill={'blue'}
           onDragMove={evt => onPositionedShipDragMove(ship, evt.target.position())}
           onDragEnd={() => onPositionedDragEnd(ship.id, index)}
           onClick={() => rotatePositionedShip(ship.id)}

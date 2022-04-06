@@ -32,6 +32,7 @@ const MapShips: React.FC<MapShipsProps> = ({ position, cellSideSize = defaultCel
         mapState={{ ships: mapShips, hits: [] }}
         onShipClick={onMapShipClick}
         cellSideSize={cellSideSize}
+        fill='pink'
       />
     </Layer>
   )

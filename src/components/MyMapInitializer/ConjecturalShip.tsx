@@ -27,7 +27,7 @@ const ConjecturalShip: React.FC<ConjecturalShipProps> = ({
         <Group x={cellSideSize} y={cellSideSize}>
           <PositionedShip
             positionedShip={conjecturalShip.ship.coords}
-            filled={conjecturalShip.wrongPosition ? 'red' : 'green'}
+            fill={conjecturalShip.wrongPosition ? 'red' : 'green'}
             cellSlideSize={cellSideSize}
           />
         </Group>

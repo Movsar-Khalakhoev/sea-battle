@@ -6,11 +6,13 @@ import { MapCoord } from '../../models/Map'
 interface UndestroyedCellProps {
   coord: MapCoord
   cellSideSize?: number
+  fill?: string
 }
 
 const UndestroyedCell: React.FC<UndestroyedCellProps> = ({
   coord,
   cellSideSize = defaultCellSideSize,
+  fill,
 }) => {
   return (
     <Rect
@@ -21,6 +23,7 @@ const UndestroyedCell: React.FC<UndestroyedCellProps> = ({
       height={cellSideSize}
       strokeWidth={1}
       stroke='red'
+      fill={fill}
     />
   )
 }

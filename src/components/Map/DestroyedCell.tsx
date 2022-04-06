@@ -6,11 +6,13 @@ import { Group, Line, Rect } from 'react-konva'
 interface DestroyedCellProps {
   coord: MapCoord
   cellSideSize?: number
+  fill?: string
 }
 
 const DestroyedCell: React.FC<DestroyedCellProps> = ({
   coord,
   cellSideSize = defaultCellSideSize,
+  fill,
 }) => {
   return (
     <Group
@@ -25,6 +27,7 @@ const DestroyedCell: React.FC<DestroyedCellProps> = ({
         height={cellSideSize}
         strokeWidth={1}
         stroke='red'
+        fill={fill}
       />
       <Line points={[0, 0, cellSideSize, cellSideSize]} strokeWidth={1} stroke='red' />
       <Line

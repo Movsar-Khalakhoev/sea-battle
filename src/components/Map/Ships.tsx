@@ -9,12 +9,14 @@ interface ShipsProps {
   mapState: IMap
   onShipClick?: (ship: MapShip) => void
   cellSideSize?: number
+  fill?: string
 }
 
 const Ships: React.FC<ShipsProps> = ({
   mapState: { ships, hits },
   onShipClick,
   cellSideSize = defaultCellSideSize,
+  fill,
 }) => {
   return (
     <Group>
@@ -32,9 +34,9 @@ const Ships: React.FC<ShipsProps> = ({
             return (
               <React.Fragment key={coord.x + coord.y}>
                 {ship.destroyed ? (
-                  <DestroyedCell coord={coord} cellSideSize={cellSideSize} />
+                  <DestroyedCell coord={coord} cellSideSize={cellSideSize} fill={fill} />
                 ) : (
-                  <UndestroyedCell coord={coord} cellSideSize={cellSideSize} />
+                  <UndestroyedCell coord={coord} cellSideSize={cellSideSize} fill={fill} />
                 )}
                 {hit && !ship.destroyed && (
                   <Circle

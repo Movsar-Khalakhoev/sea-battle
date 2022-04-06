@@ -5,13 +5,13 @@ import { defaultCellSideSize } from '../../variables'
 
 interface PositionedShipProps extends ComponentProps<typeof Group> {
   positionedShip: MapPositionedCoord[]
-  filled?: string
+  fill?: string
   cellSlideSize?: number
 }
 
 const PositionedShip: React.FC<PositionedShipProps> = ({
   positionedShip,
-  filled,
+  fill,
   cellSlideSize = defaultCellSideSize,
   ...props
 }) => {
@@ -24,10 +24,9 @@ const PositionedShip: React.FC<PositionedShipProps> = ({
           y={(coord.y - 1) * cellSlideSize}
           height={cellSlideSize}
           width={cellSlideSize}
-          strokeWidth={1}
-          stroke='red'
-          opacity={filled ? 0.3 : undefined}
-          fill={filled}
+          strokeWidth={3}
+          opacity={fill ? 0.3 : undefined}
+          fill={fill}
         />
       ))}
     </Group>
