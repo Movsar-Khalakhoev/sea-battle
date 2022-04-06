@@ -8,9 +8,6 @@ import { Layer } from 'react-konva'
 import { Vector2d } from 'konva/cmj/types'
 import { IMap } from '../../models/Map'
 
-export const horizontalCoords = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']
-export const verticalCoords = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-
 interface MapProps {
   position?: Vector2d
   mapState: IMap

@@ -1,10 +1,9 @@
 import React from 'react'
 import { Circle, Group } from 'react-konva'
 import { IMap, MapShip } from '../../models/Map'
-import { cellSideSize } from '../../variables'
+import { cellSideSize, horizontalCoords, verticalCoords } from '../../variables'
 import DestroyedCell from './DestroyedCell'
 import UndestroyedCell from './UndestroyedCell'
-import { horizontalCoords, verticalCoords } from './Map'
 
 interface ShipsProps {
   mapState: IMap
