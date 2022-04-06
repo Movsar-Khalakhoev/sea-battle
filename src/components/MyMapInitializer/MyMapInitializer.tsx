@@ -1,16 +1,15 @@
 import React from 'react'
-import { Group, Layer, Rect, Stage } from 'react-konva'
+import { Group, Layer, Stage } from 'react-konva'
 import { cellSideSize } from '../../variables'
 import CheckeredArea from '../CheckeredArea/CheckeredArea'
 import { Size } from '../../models/Size'
 import { StateContext } from '../../context/state.context'
 import HorizontalAxis from '../Map/HorizontalAxis'
 import VerticalAxis from '../Map/VerticalAxis'
-import { IMap, MapCoord } from '../../models/Map'
+import { MapCoord } from '../../models/Map'
 import { horizontalCoords, verticalCoords } from '../Map/Map'
 import PositionedShip from './PositionedShip'
 import { Vector2d } from 'konva/cmj/types'
-import Konva from 'konva'
 
 export interface MapPositionedCoord {
   x: number
@@ -26,9 +25,6 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
     height: cellSideSize * 21,
     width: cellSideSize * 15,
   })
-  const rectStage = React.useRef<Konva.Rect>(null)
-  const [ships, setShips] = React.useState(defaultMap.ships)
-  const [editableShip, setEditableShip] = React.useState<MapPositionedCoord[] | null>(null)
   const [conjecturalShip, setConjecturalShip] = React.useState<MapPositionedCoord[]>([])
 
   const onPositionedShipDragMove = (ship: MapPositionedCoord[], position: Vector2d) => {
@@ -72,43 +68,19 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
         <Stage width={size.width} height={size.height}>
           <StateContext.Provider value={value}>
             <CheckeredArea size={size} />
-            <Layer x={cellSideSize} y={cellSideSize}>
-              {editableShip && (
-                <Group
-                  onClick={() => {
-                    setShips(prev => [
-                      ...prev,
-                      { coords: translateToShipCoords(editableShip), destroyed: false },
-                    ])
-                    setEditableShip(null)
-                  }}
-                >
-                  <PositionedShip positionedShip={editableShip} />
-                </Group>
-              )}
-            </Layer>
             <Layer
               x={(position?.x || 0) * cellSideSize}
               y={(position?.y || 0) * cellSideSize}
               width={(horizontalCoords.length + 1) * cellSideSize}
               height={(verticalCoords.length + 1) * cellSideSize}
             >
+              <HorizontalAxis />
+              <VerticalAxis />
               <Group x={cellSideSize} y={cellSideSize}>
                 <PositionedShip positionedShip={conjecturalShip} filled />
               </Group>
             </Layer>
             <Layer x={(position?.x || 0) * cellSideSize} y={(position?.y || 0) * cellSideSize}>
-              <HorizontalAxis />
-              <VerticalAxis />
-              <Rect
-                ref={rectStage}
-                x={0}
-                y={0}
-                width={(horizontalCoords.length + 1) * cellSideSize}
-                height={(verticalCoords.length + 1) * cellSideSize}
-                strokeWidth={1}
-                stroke='blue'
-              />
               {positionedShips.map((ship, index) => (
                 <PositionedShip
                   key={index}
@@ -258,139 +230,3 @@ const positionedShips: MapPositionedCoord[][] = [
     },
   ],
 ]
-
-const defaultMap: IMap = {
-  hits: [],
-  ships: [
-    {
-      coords: [
-        {
-          x: 'b',
-          y: '2',
-        },
-        {
-          x: 'b',
-          y: '3',
-        },
-        {
-          x: 'b',
-          y: '4',
-        },
-        {
-          x: 'b',
-          y: '5',
-        },
-      ],
-      destroyed: false,
-    },
-    {
-      coords: [
-        {
-          x: 'd',
-          y: '2',
-        },
-        {
-          x: 'd',
-          y: '3',
-        },
-        {
-          x: 'd',
-          y: '4',
-        },
-      ],
-      destroyed: false,
-    },
-    {
-      coords: [
-        {
-          x: 'f',
-          y: '2',
-        },
-        {
-          x: 'f',
-          y: '3',
-        },
-        {
-          x: 'f',
-          y: '4',
-        },
-      ],
-      destroyed: false,
-    },
-    {
-      coords: [
-        {
-          x: 'h',
-          y: '2',
-        },
-        {
-          x: 'h',
-          y: '3',
-        },
-      ],
-      destroyed: false,
-    },
-    {
-      coords: [
-        {
-          x: 'j',
-          y: '2',
-        },
-        {
-          x: 'j',
-          y: '3',
-        },
-      ],
-      destroyed: false,
-    },
-    {
-      coords: [
-        {
-          x: 'j',
-          y: '5',
-        },
-        {
-          x: 'j',
-          y: '6',
-        },
-      ],
-      destroyed: false,
-    },
-    {
-      coords: [
-        {
-          x: 'h',
-          y: '5',
-        },
-      ],
-      destroyed: false,
-    },
-    {
-      coords: [
-        {
-          x: 'h',
-          y: '7',
-        },
-      ],
-      destroyed: false,
-    },
-    {
-      coords: [
-        {
-          x: 'f',
-          y: '6',
-        },
-      ],
-      destroyed: false,
-    },
-    {
-      coords: [
-        {
-          x: 'd',
-          y: '6',
-        },
-      ],
-      destroyed: false,
-    },
-  ],
-}
