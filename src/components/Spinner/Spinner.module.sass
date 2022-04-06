@@ -1,0 +1,23 @@
+.ldsDualRing
+  display: flex
+  align-items: center
+  justify-content: center
+  margin: 0 auto
+
+  &:after
+    content: " "
+    display: block
+    width: 80%
+    height: 80%
+    border-radius: 50%
+    box-sizing: border-box
+    border: 4px solid transparent
+    border-color: #fff var(--blue) #fff var(--blue)
+    animation: ldsDualRing 1.2s linear infinite
+
+@keyframes ldsDualRing
+  0%
+    transform: rotate(0deg)
+
+  100%
+    transform: rotate(360deg)
