@@ -5,7 +5,7 @@ import { cellSideSize } from '../../variables'
 
 interface PositionedShipProps extends ComponentProps<typeof Group> {
   positionedShip: MapPositionedCoord[]
-  filled?: boolean
+  filled?: string
 }
 
 const PositionedShip: React.FC<PositionedShipProps> = ({ positionedShip, filled, ...props }) => {
@@ -21,7 +21,7 @@ const PositionedShip: React.FC<PositionedShipProps> = ({ positionedShip, filled,
           strokeWidth={1}
           stroke='red'
           opacity={filled ? 0.3 : undefined}
-          fill={filled ? 'red' : undefined}
+          fill={filled}
         />
       ))}
     </Group>
