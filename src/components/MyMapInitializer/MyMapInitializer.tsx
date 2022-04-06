@@ -38,6 +38,7 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
 
   return (
     <div className={styles.container} ref={containerRef}>
+      <h2 className={styles.header}>Расставь свои корабли!</h2>
       <div className={styles.painter}>
         <MapPainter />
       </div>
