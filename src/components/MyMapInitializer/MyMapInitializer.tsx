@@ -12,6 +12,7 @@ import PositionedShip from './PositionedShip'
 import { Vector2d } from 'konva/cmj/types'
 import Ships from '../Map/Ships'
 import { v4 as uuidv4 } from 'uuid'
+import Konva from 'konva'
 
 export interface MapPositionedCoord {
   x: number
@@ -32,22 +33,32 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
     height: cellSideSize * 21,
     width: cellSideSize * 15,
   })
+  const positionedShipsLayerRef = React.useRef<Konva.Layer>(null)
   const [mapShips, setMapShips] = React.useState<MapShip[]>([])
   const [positionedShips, setPositionedShips] = React.useState(_positionedShips)
-  const [conjecturalShip, setConjecturalShip] = React.useState<MapPositionedShip | null>(null)
+  const [conjecturalShip, setConjecturalShip] = React.useState<{
+    ship: MapPositionedShip
+    wrongPosition: boolean
+  } | null>(null)
 
-  const onPositionedDragEnd = (index: number) => {
-    if (conjecturalShip) {
+  const onPositionedDragEnd = (id: string, index: number) => {
+    if (conjecturalShip && positionedShipsLayerRef.current) {
+      if (conjecturalShip.wrongPosition) {
+        setConjecturalShip(null)
+        positionedShipsLayerRef.current!.children![index].position({ x: 0, y: 0 })
+        return
+      }
+
       setMapShips(prev => [
         ...prev,
         {
-          coords: translateToShipCoords(conjecturalShip.coords),
+          coords: translateToShipCoords(conjecturalShip.ship.coords),
           destroyed: false,
-          id: conjecturalShip.id,
+          id: conjecturalShip.ship.id,
         },
       ])
       setConjecturalShip(null)
-      setPositionedShips(prev => prev.filter((ship, i) => i !== index))
+      setPositionedShips(prev => prev.filter(ship => ship.id !== id))
     }
   }
 
@@ -91,9 +102,22 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
 
     if (
       !conjecturalShip ||
-      JSON.stringify(newShip) !== JSON.stringify(sortShipCells(conjecturalShip))
+      JSON.stringify(newShip) !== JSON.stringify(sortShipCells(conjecturalShip.ship))
     ) {
-      setConjecturalShip(newShip)
+      const mapShipsCoords = mapShips.map(ship => translateToPositionedCoords(ship.coords))
+
+      setConjecturalShip({
+        ship: newShip,
+        wrongPosition: !!mapShipsCoords.find(coords => {
+          return coords.find(shipCoord =>
+            newShip.coords.find(
+              newShipCoord =>
+                [shipCoord.y, shipCoord.y - 1, shipCoord.y + 1].includes(newShipCoord.y) &&
+                [shipCoord.x, shipCoord.x - 1, shipCoord.x + 1].includes(newShipCoord.x)
+            )
+          )
+        }),
+      })
     }
   }
 
@@ -152,18 +176,25 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
               <VerticalAxis />
               {conjecturalShip && (
                 <Group x={cellSideSize} y={cellSideSize}>
-                  <PositionedShip positionedShip={conjecturalShip.coords} filled='green' />
+                  <PositionedShip
+                    positionedShip={conjecturalShip.ship.coords}
+                    filled={conjecturalShip.wrongPosition ? 'red' : 'green'}
+                  />
                 </Group>
               )}
             </Layer>
-            <Layer x={(position?.x || 0) * cellSideSize} y={(position?.y || 0) * cellSideSize}>
+            <Layer
+              x={(position?.x || 0) * cellSideSize}
+              y={(position?.y || 0) * cellSideSize}
+              ref={positionedShipsLayerRef}
+            >
               {positionedShips.map((ship, index) => (
                 <PositionedShip
                   key={ship.id}
                   positionedShip={ship.coords}
                   draggable
                   onDragMove={evt => onPositionedShipDragMove(ship, evt.target.position())}
-                  onDragEnd={() => onPositionedDragEnd(index)}
+                  onDragEnd={() => onPositionedDragEnd(ship.id, index)}
                   onClick={() => rotatePositionedShip(ship.id)}
                   onTap={() => rotatePositionedShip(ship.id)}
                 />
@@ -189,6 +220,13 @@ const translateToShipCoords = (coords: MapPositionedCoord[]): MapCoord[] => {
   return coords.map(coord => ({
     x: horizontalCoords[coord.x - 1],
     y: verticalCoords[coord.y - 1],
+  }))
+}
+
+const translateToPositionedCoords = (coords: MapCoord[]): MapPositionedCoord[] => {
+  return coords.map(coord => ({
+    x: horizontalCoords.findIndex(c => c === coord.x) + 1,
+    y: verticalCoords.findIndex(c => c === coord.y) + 1,
   }))
 }
 
