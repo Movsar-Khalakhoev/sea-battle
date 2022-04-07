@@ -60,6 +60,7 @@ const HitCell: React.FC<HitCellProps> = ({
         fill='red'
         opacity={0.1}
         onMouseMove={evt => onMouseMove(evt.target.getRelativePointerPosition())}
+        onTap={evt => onMouseMove(evt.target.getRelativePointerPosition())}
       />
       {hitCell && (
         <Rect
@@ -70,6 +71,7 @@ const HitCell: React.FC<HitCellProps> = ({
           fill={hitCell.wrongPosition ? 'red' : 'green'}
           opacity={0.5}
           onClick={() => !hitCell.wrongPosition && !disabled && onClick(hitCell.position)}
+          onTap={() => !hitCell.wrongPosition && !disabled && onClick(hitCell.position)}
         />
       )}
     </Group>
