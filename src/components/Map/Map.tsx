@@ -6,14 +6,19 @@ import Ships from './Ships'
 import MissedHits from './MissedHits'
 import { Layer, Rect, Text } from 'react-konva'
 import { Vector2d } from 'konva/cmj/types'
-import { IMap } from '../../models/Map'
+import { IMap, MapCoord } from '../../models/Map'
 import { getCssVariable } from '../../utils/cssVariables'
+import HitCell from './HitCell'
 
 interface MapProps {
   position?: Vector2d
   mapState: IMap
   cellSideSize?: number
   nickname?: string
+  hit?: {
+    onHit: (coord: MapCoord) => void
+    hits: MapCoord[]
+  }
 }
 
 const Map: React.FC<MapProps> = ({
@@ -21,6 +26,7 @@ const Map: React.FC<MapProps> = ({
   position,
   cellSideSize = defaultCellSideSize,
   nickname,
+  hit,
 }) => {
   return (
     <Layer x={(position?.x || 0) * cellSideSize} y={(position?.y || 0) * cellSideSize}>
@@ -37,6 +43,7 @@ const Map: React.FC<MapProps> = ({
       />
       <Ships mapState={mapState} cellSideSize={cellSideSize} />
       <MissedHits mapState={mapState} cellSideSize={cellSideSize} />
+      {hit && <HitCell cellSideSize={cellSideSize} onClick={hit.onHit} existsHits={hit.hits} />}
     </Layer>
   )
 }

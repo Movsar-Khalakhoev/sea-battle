@@ -10,7 +10,7 @@ interface RivalMapProps {
 }
 
 const RivalMap: React.FC<RivalMapProps> = ({ position, cellSideSize = defaultCellSideSize }) => {
-  const { rivalMap, game } = React.useContext(StateContext)
+  const { rivalMap, setRivalMapHits, game } = React.useContext(StateContext)
 
   return (
     <Map
@@ -18,6 +18,10 @@ const RivalMap: React.FC<RivalMapProps> = ({ position, cellSideSize = defaultCel
       mapState={rivalMap}
       cellSideSize={cellSideSize}
       nickname={game?.rivalNickname}
+      hit={{
+        onHit: coord => setRivalMapHits(prev => [...prev, coord]),
+        hits: rivalMap.hits,
+      }}
     />
   )
 }
