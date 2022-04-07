@@ -57,4 +57,15 @@ export class FirebaseService {
       [`${whoAmI === 'player1' ? 'player2' : 'player1'}.hits`]: arrayUnion(coord),
     })
   }
+
+  static reset(gameId: string) {
+    return updateDoc(doc(this.firestoreDb, this.collectionName, gameId), {
+      'player1.hits': [],
+      'player1.map': [],
+      'player1.readyToPlay': false,
+      'player2.hits': [],
+      'player2.map': [],
+      'player2.readyToPlay': false,
+    })
+  }
 }

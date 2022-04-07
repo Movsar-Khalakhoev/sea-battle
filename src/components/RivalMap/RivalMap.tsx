@@ -13,7 +13,7 @@ interface RivalMapProps {
 }
 
 const RivalMap: React.FC<RivalMapProps> = ({ position, cellSideSize = defaultCellSideSize }) => {
-  const { rivalMap, setRivalMapHits, game } = React.useContext(StateContext)
+  const { setStep, rivalMap, setRivalMapHits, game } = React.useContext(StateContext)
   const [visibleRivalMapShips, setVisibleRivalMapShips] = React.useState<MapShip[]>([])
   const [battle] = useBattle(game?.id)
 
@@ -41,6 +41,16 @@ const RivalMap: React.FC<RivalMapProps> = ({ position, cellSideSize = defaultCel
       }
     }
   }, [battle])
+
+  React.useEffect(() => {
+    if (
+      rivalMap.ships.length === visibleRivalMapShips.length &&
+      visibleRivalMapShips.reduce((acc, ship) => acc && ship.destroyed, true)
+    ) {
+      console.log('RivalMap')
+      setStep('end')
+    }
+  }, [visibleRivalMapShips])
 
   React.useEffect(() => {
     const copiedRivalShips = JSON.parse(JSON.stringify(rivalMap.ships)) as MapShip[]

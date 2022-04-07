@@ -1,7 +1,7 @@
 import React from 'react'
 import { IMap, MapCoord, MapShip } from '../models/Map'
 
-export type Step = 'register' | 'initializer' | 'game'
+export type Step = 'register' | 'initializer' | 'game' | 'end'
 
 export type Game = {
   id: string
@@ -23,6 +23,8 @@ export interface IStateContext {
   rivalMap: IMap
   setRivalMapShips: React.Dispatch<React.SetStateAction<MapShip[]>>
   setRivalMapHits: React.Dispatch<React.SetStateAction<MapCoord[]>>
+
+  reset: () => void
 }
 
 export const StateContext = React.createContext<IStateContext>({
@@ -45,6 +47,8 @@ export const StateContext = React.createContext<IStateContext>({
   },
   setRivalMapShips: () => {},
   setRivalMapHits: () => {},
+
+  reset: () => {},
 })
 
 const StateContextProvider: React.FC = ({ children }) => {
@@ -54,6 +58,42 @@ const StateContextProvider: React.FC = ({ children }) => {
   const [rivalHits, setRivalHits] = React.useState<MapCoord[]>([])
   const [rivalShips, setRivalShips] = React.useState<MapShip[]>([])
   const [myHits, setMyHits] = React.useState<MapCoord[]>([])
+
+  const reset = () => {
+    setStep('initializer')
+    setMyShips([])
+    setRivalShips([])
+    setMyHits([])
+    setRivalHits([])
+  }
+
+  React.useEffect(() => {
+    setMyShips(prev =>
+      prev.map(ship => {
+        const destroyed = !ship.coords.filter(
+          coord => !rivalHits.find(hit => coord.x === hit.x && coord.y === hit.y)
+        ).length
+        return {
+          ...ship,
+          destroyed,
+        }
+      })
+    )
+  }, [rivalHits])
+
+  React.useEffect(() => {
+    setRivalShips(prev =>
+      prev.map(ship => {
+        const destroyed = !ship.coords.filter(
+          coord => !myHits.find(hit => coord.x === hit.x && coord.y === hit.y)
+        ).length
+        return {
+          ...ship,
+          destroyed,
+        }
+      })
+    )
+  }, [myHits])
 
   return (
     <StateContext.Provider
@@ -71,6 +111,8 @@ const StateContextProvider: React.FC = ({ children }) => {
         rivalMap: { ships: rivalShips, hits: myHits },
         setRivalMapShips: setRivalShips,
         setRivalMapHits: setMyHits,
+
+        reset,
       }}
     >
       {children}

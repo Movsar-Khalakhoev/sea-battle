@@ -10,7 +10,7 @@ interface MyMapProps {
 }
 
 const MyMap: React.FC<MyMapProps> = ({ position, cellSideSize }) => {
-  const { myMap, setMyMapHits, game } = React.useContext(StateContext)
+  const { setStep, myMap, setMyMapHits, game } = React.useContext(StateContext)
   const [battle] = useBattle(game?.id)
 
   React.useEffect(() => {
@@ -23,6 +23,13 @@ const MyMap: React.FC<MyMapProps> = ({ position, cellSideSize }) => {
       }
     }
   }, [battle])
+
+  React.useEffect(() => {
+    if (myMap.ships.reduce((acc, ship) => acc && ship.destroyed, true)) {
+      console.log('MyMap')
+      setStep('end')
+    }
+  }, [myMap])
 
   return (
     <Map
