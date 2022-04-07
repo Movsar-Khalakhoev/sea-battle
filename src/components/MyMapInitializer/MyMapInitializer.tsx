@@ -26,7 +26,7 @@ interface MyMapInitializerProps {}
 
 const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
   const containerRef = React.useRef<HTMLDivElement>(null)
-  const { setStep, setMyMapShips, game } = React.useContext(StateContext)
+  const { setStep, setMyMapShips, setRivalMapShips, game } = React.useContext(StateContext)
   const { mapShips, positionedShips, setRulesModelOpened, setInitializerCellSideSize } =
     React.useContext(MyMapInitializerContext)
   const [readyLoading, setReadyLoading] = React.useState(false)
@@ -43,7 +43,9 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
   const onReadyClick = () => {
     if (game) {
       setReadyLoading(true)
-      FirebaseService.readyToPlay(game.id, game.player).finally(() => setReadyLoading(false))
+      FirebaseService.readyToPlay(game.id, game.player, mapShips).finally(() =>
+        setReadyLoading(false)
+      )
     }
   }
 
@@ -75,9 +77,10 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
 
   React.useEffect(() => {
     const data = battle?.data()
-    if (data && data.player1.readyToPlay && data.player2.readyToPlay) {
+    if (game && data && data.player1.readyToPlay && data.player2.readyToPlay) {
       setStep('game')
       setMyMapShips(mapShips)
+      setRivalMapShips(data[game.player === 'player1' ? 'player2' : 'player1'].map)
       Store.addNotification({
         type: 'success',
         message: 'Игра началась!',
