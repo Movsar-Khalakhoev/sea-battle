@@ -18,6 +18,7 @@ interface MapProps {
   hit?: {
     onHit: (coord: MapCoord) => void
     hits: MapCoord[]
+    disabled: boolean
   }
 }
 
@@ -43,7 +44,14 @@ const Map: React.FC<MapProps> = ({
       />
       <Ships mapState={mapState} cellSideSize={cellSideSize} />
       <MissedHits mapState={mapState} cellSideSize={cellSideSize} />
-      {hit && <HitCell cellSideSize={cellSideSize} onClick={hit.onHit} existsHits={hit.hits} />}
+      {hit && (
+        <HitCell
+          cellSideSize={cellSideSize}
+          onClick={hit.onHit}
+          existsHits={hit.hits}
+          disabled={hit.disabled}
+        />
+      )}
     </Layer>
   )
 }

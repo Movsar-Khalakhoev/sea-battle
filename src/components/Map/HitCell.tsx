@@ -8,12 +8,14 @@ interface HitCellProps {
   cellSideSize?: number
   onClick: (coord: MapCoord) => void
   existsHits: MapCoord[]
+  disabled: boolean
 }
 
 const HitCell: React.FC<HitCellProps> = ({
   cellSideSize = defaultCellSideSize,
   onClick,
   existsHits,
+  disabled,
 }) => {
   const [hitCell, setHitCell] = React.useState<{
     position: MapCoord
@@ -36,7 +38,7 @@ const HitCell: React.FC<HitCellProps> = ({
           : verticalCoords[Math.floor(mousePosition.y / cellSideSize)],
     }
 
-    if (JSON.stringify(cellPosition) !== JSON.stringify(hitCell)) {
+    if (!disabled && JSON.stringify(cellPosition) !== JSON.stringify(hitCell)) {
       setHitCell({
         position: cellPosition,
         wrongPosition: !!existsHits.find(
@@ -45,6 +47,10 @@ const HitCell: React.FC<HitCellProps> = ({
       })
     }
   }
+
+  React.useEffect(() => {
+    if (disabled) setHitCell(null)
+  }, [disabled])
 
   return (
     <Group x={cellSideSize} y={cellSideSize} onMouseLeave={() => setHitCell(null)}>
@@ -63,7 +69,7 @@ const HitCell: React.FC<HitCellProps> = ({
           width={cellSideSize}
           fill={hitCell.wrongPosition ? 'red' : 'green'}
           opacity={0.5}
-          onClick={() => !hitCell.wrongPosition && onClick(hitCell.position)}
+          onClick={() => !hitCell.wrongPosition && !disabled && onClick(hitCell.position)}
         />
       )}
     </Group>

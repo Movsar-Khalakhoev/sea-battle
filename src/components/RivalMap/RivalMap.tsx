@@ -42,6 +42,7 @@ const RivalMap: React.FC<RivalMapProps> = ({ position, cellSideSize = defaultCel
       hit={{
         onHit,
         hits: rivalMap.hits,
+        disabled: battle?.data()?.move !== game?.player,
       }}
     />
   )
