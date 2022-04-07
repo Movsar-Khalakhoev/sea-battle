@@ -46,7 +46,6 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({ onClose }) => {
       .finally(() => setCreateLoading(false))
   }
 
-  console.log(battle?.data())
   return (
     <>
       <div className={styles.createFormGameIdContainer}>
@@ -75,7 +74,8 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({ onClose }) => {
           onClick={createGame}
           className={styles.buttonsButton}
           disabled={!nickname || !!battle?.data()}
-          loading={createLoading || (battle?.data() && !battle?.data()?.player2.nickname)}
+          loading={createLoading || (battle?.data() && !battle?.data()?.player2.nickname) || true}
+          loadingLabel='Ожидание подключения игрока'
         >
           Создать
         </Button>
