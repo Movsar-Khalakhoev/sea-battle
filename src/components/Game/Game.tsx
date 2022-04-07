@@ -6,33 +6,38 @@ import { defaultCellSideSize } from '../../variables'
 import MyMap from '../MyMap/MyMap'
 import RivalMap from '../RivalMap/RivalMap'
 
+const mapSize = {
+  height: 15,
+  width: 27,
+}
+
 interface GameProps {}
 
 const Game: React.FC<GameProps> = () => {
-  const [stageSize, setStageSize] = React.useState({
-    height: 0,
-    width: 0,
-  })
+  const [gameCellSideSize, setGameCellSideSize] = React.useState(defaultCellSideSize)
 
   React.useEffect(() => {
-    setStageSize({
-      height: Math.floor((window.innerHeight * 0.7) / defaultCellSideSize) * defaultCellSideSize,
-      width: Math.floor((window.innerWidth * 0.7) / defaultCellSideSize) * defaultCellSideSize,
-    })
+    setGameCellSideSize((window.innerWidth * 0.6) / mapSize.width)
   }, [])
 
   return (
     <StateContext.Consumer>
       {value => (
         <Stage
-          width={stageSize.width}
-          height={stageSize.height}
+          width={mapSize.width * gameCellSideSize}
+          height={mapSize.height * gameCellSideSize}
           style={{ border: '1px solid red' }}
         >
           <StateContext.Provider value={value}>
-            <CheckeredArea size={stageSize} />
-            <MyMap position={{ x: 20, y: 5 }} />
-            <RivalMap position={{ x: 31, y: 5 }} />
+            <CheckeredArea
+              size={{
+                width: mapSize.width * gameCellSideSize,
+                height: mapSize.height * gameCellSideSize,
+              }}
+              cellSideSize={gameCellSideSize}
+            />
+            <MyMap position={{ x: 1, y: 2 }} cellSideSize={gameCellSideSize} />
+            <RivalMap position={{ x: 14, y: 2 }} cellSideSize={gameCellSideSize} />
           </StateContext.Provider>
         </Stage>
       )}

@@ -5,9 +5,13 @@ import { IMap } from '../../models/Map'
 
 interface MissedHitsProps {
   mapState: IMap
+  cellSideSize?: number
 }
 
-const MissedHits: React.FC<MissedHitsProps> = ({ mapState: { ships, hits } }) => {
+const MissedHits: React.FC<MissedHitsProps> = ({
+  mapState: { ships, hits },
+  cellSideSize = defaultCellSideSize,
+}) => {
   const missedHits = React.useMemo(() => {
     return hits.filter(hit => {
       const shipsCoords = ships.map(ship => ship.coords).flat()
@@ -17,23 +21,17 @@ const MissedHits: React.FC<MissedHitsProps> = ({ mapState: { ships, hits } }) =>
   }, [ships, hits])
 
   return (
-    <Group x={defaultCellSideSize} y={defaultCellSideSize}>
+    <Group x={cellSideSize} y={cellSideSize}>
       {missedHits.map(hit => (
         <Star
           key={hit.x + hit.y}
-          numPoints={Math.floor(defaultCellSideSize / 4)}
-          innerRadius={defaultCellSideSize / 9}
-          outerRadius={defaultCellSideSize / 3}
+          numPoints={Math.floor(cellSideSize / 4)}
+          innerRadius={cellSideSize / 9}
+          outerRadius={cellSideSize / 3}
           strokeWidth={1}
           stroke='red'
-          x={
-            horizontalCoords.findIndex(c => c === hit.x) * defaultCellSideSize +
-            defaultCellSideSize / 2
-          }
-          y={
-            verticalCoords.findIndex(c => c === hit.y) * defaultCellSideSize +
-            defaultCellSideSize / 2
-          }
+          x={horizontalCoords.findIndex(c => c === hit.x) * cellSideSize + cellSideSize / 2}
+          y={verticalCoords.findIndex(c => c === hit.y) * cellSideSize + cellSideSize / 2}
         />
       ))}
     </Group>
