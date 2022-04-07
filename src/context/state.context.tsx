@@ -3,7 +3,15 @@ import { IMap, MapCoord, MapShip } from '../models/Map'
 
 export type Step = 'register' | 'initializer' | 'game'
 
+export type Game = {
+  id: string
+  myNickname: string
+  rivalNickname: string
+}
+
 export interface IStateContext {
+  game: Game | null
+  setGame: React.Dispatch<React.SetStateAction<Game | null>>
   step: Step
   setStep: React.Dispatch<React.SetStateAction<Step>>
 
@@ -17,6 +25,9 @@ export interface IStateContext {
 }
 
 export const StateContext = React.createContext<IStateContext>({
+  game: null,
+  setGame: () => {},
+
   step: 'register',
   setStep: () => {},
 
@@ -37,6 +48,7 @@ export const StateContext = React.createContext<IStateContext>({
 
 const StateContextProvider: React.FC = ({ children }) => {
   const [step, setStep] = React.useState<Step>('register')
+  const [game, setGame] = React.useState<Game | null>(null)
   const [myShips, setMyShips] = React.useState<MapShip[]>([])
   const [rivalHits, setRivalHits] = React.useState<MapCoord[]>([])
   const [rivalShips, setRivalShips] = React.useState<MapShip[]>([])
@@ -45,6 +57,9 @@ const StateContextProvider: React.FC = ({ children }) => {
   return (
     <StateContext.Provider
       value={{
+        game,
+        setGame,
+
         step,
         setStep,
 

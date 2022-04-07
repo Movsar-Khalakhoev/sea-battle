@@ -9,12 +9,14 @@ import { useDocument } from 'react-firebase-hooks/firestore'
 import { doc } from 'firebase/firestore'
 import { FirebaseModel } from '../../models/FirebaseModel'
 import { DocumentReference } from 'firebase/firestore'
+import { StateContext } from '../../context/state.context'
 
 interface CreateGameFormProps {
   onClose: () => void
 }
 
 const CreateGameForm: React.FC<CreateGameFormProps> = ({ onClose }) => {
+  const { setGame, setStep } = React.useContext(StateContext)
   const [gameId, setGameId] = React.useState('')
   const [nickname, setNickname] = React.useState('')
   const [createLoading, setCreateLoading] = React.useState(false)
@@ -45,6 +47,18 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({ onClose }) => {
       .catch(console.log)
       .finally(() => setCreateLoading(false))
   }
+
+  React.useEffect(() => {
+    const data = battle?.data()
+    if (data && data.player1.nickname && data.player2.nickname) {
+      setGame({
+        id: gameId,
+        myNickname: data.player1.nickname,
+        rivalNickname: data.player2.nickname,
+      })
+      setStep('initializer')
+    }
+  }, [battle])
 
   return (
     <>

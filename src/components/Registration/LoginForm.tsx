@@ -7,12 +7,14 @@ import { Store } from 'react-notifications-component'
 import { useDocument } from 'react-firebase-hooks/firestore'
 import { FirebaseModel } from '../../models/FirebaseModel'
 import { doc, DocumentReference } from 'firebase/firestore'
+import { StateContext } from '../../context/state.context'
 
 interface LoginFormProps {
   onClose: () => void
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
+  const { setGame, setStep } = React.useContext(StateContext)
   const [gameId, setGameId] = React.useState('')
   const [nickname, setNickname] = React.useState('')
   const [loginLoading, setLoginLoading] = React.useState(false)
@@ -35,6 +37,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
       })
     }
   }, [nickname])
+
+  React.useEffect(() => {
+    const data = battle?.data()
+    if (data && data.player1.nickname && data.player2.nickname) {
+      setGame({
+        id: gameId,
+        myNickname: data.player2.nickname,
+        rivalNickname: data.player1.nickname,
+      })
+      setStep('initializer')
+    }
+  }, [battle])
 
   const login = () => {
     setLoginLoading(true)
