@@ -19,7 +19,15 @@ const RivalMap: React.FC<RivalMapProps> = ({ position, cellSideSize = defaultCel
 
   const onHit = async (coord: MapCoord) => {
     if (game) {
-      await FirebaseService.hit(game.id, coord, game.player)
+      const allShipsCoords = rivalMap.ships.map(ship => ship.coords).flat()
+      const hit = !!allShipsCoords.find(c => c.x === coord.x && c.y === coord.y)
+      await FirebaseService.hit(
+        game.id,
+        coord,
+        game.player,
+
+        hit ? game.player : game.player === 'player1' ? 'player2' : 'player1'
+      )
     }
   }
 

@@ -46,9 +46,14 @@ export class FirebaseService {
     } as Partial<FirebaseModel>)
   }
 
-  static hit(gameId: string, coord: MapCoord, whoAmI: 'player1' | 'player2') {
+  static hit(
+    gameId: string,
+    coord: MapCoord,
+    whoAmI: 'player1' | 'player2',
+    move: 'player1' | 'player2'
+  ) {
     return updateDoc(doc(this.firestoreDb, this.collectionName, gameId), {
-      move: whoAmI === 'player1' ? 'player2' : 'player1',
+      move,
       [`${whoAmI === 'player1' ? 'player2' : 'player1'}.hits`]: arrayUnion(coord),
     })
   }
