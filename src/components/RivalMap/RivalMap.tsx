@@ -47,7 +47,6 @@ const RivalMap: React.FC<RivalMapProps> = ({ position, cellSideSize = defaultCel
       rivalMap.ships.length === visibleRivalMapShips.length &&
       visibleRivalMapShips.reduce((acc, ship) => acc && ship.destroyed, true)
     ) {
-      console.log('RivalMap')
       setStep('end')
     }
   }, [visibleRivalMapShips])

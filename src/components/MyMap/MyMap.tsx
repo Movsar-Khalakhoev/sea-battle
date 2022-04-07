@@ -26,7 +26,6 @@ const MyMap: React.FC<MyMapProps> = ({ position, cellSideSize }) => {
 
   React.useEffect(() => {
     if (myMap.ships.reduce((acc, ship) => acc && ship.destroyed, true)) {
-      console.log('MyMap')
       setStep('end')
     }
   }, [myMap])

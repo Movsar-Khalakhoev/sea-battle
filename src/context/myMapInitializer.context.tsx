@@ -166,6 +166,8 @@ export interface IMyMapInitializerContext {
 
   initializerCellSideSize: number
   setInitializerCellSideSize: React.Dispatch<React.SetStateAction<number>>
+
+  resetInitializer: () => void
 }
 
 export const MyMapInitializerContext = React.createContext<IMyMapInitializerContext>({
@@ -183,6 +185,8 @@ export const MyMapInitializerContext = React.createContext<IMyMapInitializerCont
 
   initializerCellSideSize: defaultCellSideSize,
   setInitializerCellSideSize: () => {},
+
+  resetInitializer: () => {},
 })
 
 interface MyMapInitializerContextProps {}
@@ -197,6 +201,12 @@ const MyMapInitializerContextProvider: React.FC<MyMapInitializerContextProps> = 
   const [rulesModalOpened, setRulesModelOpened] = React.useState(false)
   const [initializerCellSideSize, setInitializerCellSideSize] = React.useState(defaultCellSideSize)
 
+  const resetInitializer = () => {
+    setMapShips([])
+    setPositionedShips(_positionedShips)
+    setConjecturalShip(null)
+  }
+
   return (
     <MyMapInitializerContext.Provider
       value={{
@@ -210,6 +220,7 @@ const MyMapInitializerContextProvider: React.FC<MyMapInitializerContextProps> = 
         setRulesModelOpened,
         initializerCellSideSize,
         setInitializerCellSideSize,
+        resetInitializer,
       }}
     >
       {children}
