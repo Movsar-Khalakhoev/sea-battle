@@ -5,6 +5,7 @@ export type Step = 'register' | 'initializer' | 'game'
 
 export type Game = {
   id: string
+  player: 'player1' | 'player2'
   myNickname: string
   rivalNickname: string
 }

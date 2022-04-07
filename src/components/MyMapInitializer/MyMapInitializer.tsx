@@ -6,6 +6,11 @@ import { MyMapInitializerContext } from '../../context/myMapInitializer.context'
 import clsx from '../../utils/clsx'
 import RulesModal from './RulesModal/RulesModal'
 import { StateContext } from '../../context/state.context'
+import { FirebaseService } from '../../utils/FirebaseService'
+import { useDocument } from 'react-firebase-hooks/firestore'
+import { FirebaseModel } from '../../models/FirebaseModel'
+import { doc, DocumentReference } from 'firebase/firestore'
+import { Store } from 'react-notifications-component'
 
 export interface MapPositionedCoord {
   x: number
@@ -21,13 +26,25 @@ interface MyMapInitializerProps {}
 
 const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
   const containerRef = React.useRef<HTMLDivElement>(null)
-  const { setStep, setMyMapShips } = React.useContext(StateContext)
+  const { setStep, setMyMapShips, game } = React.useContext(StateContext)
   const { mapShips, positionedShips, setRulesModelOpened, setInitializerCellSideSize } =
     React.useContext(MyMapInitializerContext)
+  const [readyLoading, setReadyLoading] = React.useState(false)
+  const [battle] = useDocument<FirebaseModel>(
+    game?.id
+      ? (doc(
+          FirebaseService.getFirestoreDb(),
+          FirebaseService.collectionName,
+          game.id
+        ) as DocumentReference<FirebaseModel>)
+      : undefined
+  )
 
   const onReadyClick = () => {
-    setStep('game')
-    setMyMapShips(mapShips)
+    if (game) {
+      setReadyLoading(true)
+      FirebaseService.readyToPlay(game.id, game.player).finally(() => setReadyLoading(false))
+    }
   }
 
   React.useEffect(() => {
@@ -35,6 +52,42 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
       setInitializerCellSideSize(containerRef.current.clientWidth / initializerMapSize.width)
     }
   }, [])
+
+  React.useEffect(() => {
+    const data = battle?.data()
+    if (
+      data &&
+      ((game?.player === 'player1' && data.player2.readyToPlay && !data.player1.readyToPlay) ||
+        (game?.player === 'player2' && data.player1.readyToPlay && !data.player2.readyToPlay))
+    ) {
+      Store.addNotification({
+        type: 'success',
+        message: `${
+          game?.player === 'player1' ? data.player2.nickname : data.player1.nickname
+        } готов к бою!`,
+        container: 'top-right',
+        dismiss: {
+          duration: 3000,
+        },
+      })
+    }
+  }, [battle])
+
+  React.useEffect(() => {
+    const data = battle?.data()
+    if (data && data.player1.readyToPlay && data.player2.readyToPlay) {
+      setStep('game')
+      setMyMapShips(mapShips)
+      Store.addNotification({
+        type: 'success',
+        message: 'Игра началась!',
+        container: 'top-right',
+        dismiss: {
+          duration: 3000,
+        },
+      })
+    }
+  }, [battle])
 
   return (
     <div className={styles.container} ref={containerRef}>
@@ -47,6 +100,21 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
           className={clsx(styles.actionsAction, styles.actionsReady)}
           disabled={!!positionedShips.length}
           onClick={onReadyClick}
+          loading={
+            readyLoading ||
+            (game?.player === 'player1'
+              ? battle?.data()?.player1.readyToPlay && !battle?.data()?.player2.readyToPlay
+              : battle?.data()?.player2.readyToPlay && !battle?.data()?.player1.readyToPlay)
+          }
+          loadingLabel={
+            (
+              game?.player === 'player1'
+                ? battle?.data()?.player1.readyToPlay && !battle?.data()?.player2.readyToPlay
+                : battle?.data()?.player2.readyToPlay && !battle?.data()?.player1.readyToPlay
+            )
+              ? 'Ожидание второго игрока'
+              : undefined
+          }
         >
           Готов!
         </Button>

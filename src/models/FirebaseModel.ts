@@ -1,10 +1,12 @@
 export interface FirebaseModel {
   player1: {
+    readyToPlay: boolean
     nickname: string
     hits: any
   }
   player2: {
-    nickname: string
+    readyToPlay: boolean
+    nickname: string | null
     hits: any
   }
 }

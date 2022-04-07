@@ -43,6 +43,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
     if (data && data.player1.nickname && data.player2.nickname) {
       setGame({
         id: gameId,
+        player: 'player2',
         myNickname: data.player2.nickname,
         rivalNickname: data.player1.nickname,
       })

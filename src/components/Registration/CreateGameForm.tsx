@@ -53,6 +53,7 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({ onClose }) => {
     if (data && data.player1.nickname && data.player2.nickname) {
       setGame({
         id: gameId,
+        player: 'player1',
         myNickname: data.player1.nickname,
         rivalNickname: data.player2.nickname,
       })
