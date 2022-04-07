@@ -4,11 +4,11 @@ import { StateContext } from '../../context/state.context'
 import CheckeredArea from '../CheckeredArea/CheckeredArea'
 import MyMap from '../MyMap/MyMap'
 import RivalMap from '../RivalMap/RivalMap'
-import { defaultCellSideSize } from '../../variables'
+import { defaultCellSideSize, isMobile } from '../../variables'
 
 export const mapSize = {
-  height: 15,
-  width: 27,
+  height: isMobile ? 27 : 15,
+  width: isMobile ? 15 : 27,
 }
 
 interface GamePainterProps {
@@ -19,7 +19,7 @@ const GamePainter: React.FC<GamePainterProps> = ({ containerWidth }) => {
   const [gameCellSideSize, setGameCellSideSize] = React.useState(defaultCellSideSize)
 
   React.useEffect(() => {
-    setGameCellSideSize((containerWidth * 0.6) / mapSize.width)
+    setGameCellSideSize(Math.min(containerWidth, 800) / mapSize.width)
   }, [containerWidth])
 
   return (
@@ -34,8 +34,11 @@ const GamePainter: React.FC<GamePainterProps> = ({ containerWidth }) => {
               }}
               cellSideSize={gameCellSideSize}
             />
-            <MyMap position={{ x: 1, y: 2 }} cellSideSize={gameCellSideSize} />
-            <RivalMap position={{ x: 14, y: 2 }} cellSideSize={gameCellSideSize} />
+            <MyMap position={{ x: isMobile ? 2 : 1, y: 2 }} cellSideSize={gameCellSideSize} />
+            <RivalMap
+              position={{ x: isMobile ? 2 : 14, y: isMobile ? 14 : 2 }}
+              cellSideSize={gameCellSideSize}
+            />
           </StateContext.Provider>
         </Stage>
       )}

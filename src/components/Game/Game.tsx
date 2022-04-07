@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './Game.module.sass'
 import GamePainter from './GamePainter'
+import OrderText from './OrderText'
 
 interface GameProps {}
 
@@ -16,6 +17,7 @@ const Game: React.FC<GameProps> = () => {
 
   return (
     <div className={styles.container} ref={containerRef}>
+      <OrderText />
       <div className={styles.containerGameContainer}>
         <GamePainter containerWidth={containerWidth} />
       </div>
