@@ -48,7 +48,7 @@ export const StateContext = React.createContext<IStateContext>({
 })
 
 const StateContextProvider: React.FC = ({ children }) => {
-  const [step, setStep] = React.useState<Step>('game')
+  const [step, setStep] = React.useState<Step>('register')
   const [game, setGame] = React.useState<Game | null>(null)
   const [myShips, setMyShips] = React.useState<MapShip[]>([])
   const [rivalHits, setRivalHits] = React.useState<MapCoord[]>([])

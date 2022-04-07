@@ -1,5 +1,6 @@
-import { addDoc, collection, Firestore, updateDoc, doc } from 'firebase/firestore'
+import { addDoc, collection, Firestore, updateDoc, arrayUnion, doc } from 'firebase/firestore'
 import { FirebaseModel } from '../models/FirebaseModel'
+import { MapCoord } from '../models/Map'
 
 export class FirebaseService {
   static readonly collectionName = 'battles'
@@ -38,10 +39,16 @@ export class FirebaseService {
     } as Partial<FirebaseModel>)
   }
 
-  static readyToPlay(gameId: string, player: 'player1' | 'player2') {
+  static readyToPlay(gameId: string, whoAmI: 'player1' | 'player2') {
     const document = doc(this.firestoreDb, this.collectionName, gameId)
     return updateDoc(document, {
-      [`${player}.readyToPlay`]: true,
+      [`${whoAmI}.readyToPlay`]: true,
     } as Partial<FirebaseModel>)
+  }
+
+  static hit(gameId: string, coord: MapCoord, whoAmI: 'player1' | 'player2') {
+    return updateDoc(doc(this.firestoreDb, this.collectionName, gameId), {
+      [`${whoAmI === 'player1' ? 'player2' : 'player1'}.hits`]: arrayUnion(coord),
+    })
   }
 }
