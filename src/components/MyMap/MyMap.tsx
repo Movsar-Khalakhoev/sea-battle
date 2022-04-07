@@ -9,9 +9,16 @@ interface MyMapProps {
 }
 
 const MyMap: React.FC<MyMapProps> = ({ position, cellSideSize }) => {
-  const { myMap } = React.useContext(StateContext)
+  const { myMap, game } = React.useContext(StateContext)
 
-  return <Map position={position} mapState={myMap} cellSideSize={cellSideSize} />
+  return (
+    <Map
+      position={position}
+      mapState={myMap}
+      cellSideSize={cellSideSize}
+      nickname={game?.myNickname}
+    />
+  )
 }
 
 export default MyMap

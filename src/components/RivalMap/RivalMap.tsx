@@ -10,9 +10,16 @@ interface RivalMapProps {
 }
 
 const RivalMap: React.FC<RivalMapProps> = ({ position, cellSideSize = defaultCellSideSize }) => {
-  const { rivalMap } = React.useContext(StateContext)
+  const { rivalMap, game } = React.useContext(StateContext)
 
-  return <Map position={position} mapState={rivalMap} cellSideSize={cellSideSize} />
+  return (
+    <Map
+      position={position}
+      mapState={rivalMap}
+      cellSideSize={cellSideSize}
+      nickname={game?.rivalNickname}
+    />
+  )
 }
 
 export default RivalMap

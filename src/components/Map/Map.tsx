@@ -4,7 +4,7 @@ import HorizontalAxis from './HorizontalAxis'
 import VerticalAxis from './VerticalAxis'
 import Ships from './Ships'
 import MissedHits from './MissedHits'
-import { Layer, Rect } from 'react-konva'
+import { Layer, Rect, Text } from 'react-konva'
 import { Vector2d } from 'konva/cmj/types'
 import { IMap } from '../../models/Map'
 import { getCssVariable } from '../../utils/cssVariables'
@@ -13,13 +13,20 @@ interface MapProps {
   position?: Vector2d
   mapState: IMap
   cellSideSize?: number
+  nickname?: string
 }
 
-const Map: React.FC<MapProps> = ({ mapState, position, cellSideSize = defaultCellSideSize }) => {
+const Map: React.FC<MapProps> = ({
+  mapState,
+  position,
+  cellSideSize = defaultCellSideSize,
+  nickname,
+}) => {
   return (
     <Layer x={(position?.x || 0) * cellSideSize} y={(position?.y || 0) * cellSideSize}>
       <HorizontalAxis cellSideSize={cellSideSize} />
       <VerticalAxis cellSideSize={cellSideSize} />
+      {nickname && <Text text={nickname} fontSize={20} y={-20} x={10} />}
       <Rect
         x={cellSideSize}
         y={cellSideSize}
