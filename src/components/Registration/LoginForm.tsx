@@ -2,6 +2,11 @@ import React from 'react'
 import Input from '../Input/Input'
 import Button from '../Button/Button'
 import styles from './Registration.module.sass'
+import { FirebaseService } from '../../utils/FirebaseService'
+import { Store } from 'react-notifications-component'
+import { useDocument } from 'react-firebase-hooks/firestore'
+import { FirebaseModel } from '../../models/FirebaseModel'
+import { doc, DocumentReference } from 'firebase/firestore'
 
 interface LoginFormProps {
   onClose: () => void
@@ -10,8 +15,43 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
   const [gameId, setGameId] = React.useState('')
   const [nickname, setNickname] = React.useState('')
+  const [loginLoading, setLoginLoading] = React.useState(false)
+  const [battle] = useDocument<FirebaseModel>(
+    gameId
+      ? (doc(
+          FirebaseService.getFirestoreDb(),
+          FirebaseService.collectionName,
+          gameId
+        ) as DocumentReference<FirebaseModel>)
+      : undefined
+  )
 
-  const login = () => {}
+  React.useEffect(() => {
+    if (nickname === battle?.data()?.player1.nickname) {
+      Store.addNotification({
+        type: 'warning',
+        message: 'Ники не могут быть похожи. Возьмите другой ник',
+        container: 'top-right',
+      })
+    }
+  }, [nickname])
+
+  const login = () => {
+    setLoginLoading(true)
+    FirebaseService.joinToBattle(gameId, nickname)
+      .then(() => console.log('joined to game'))
+      .catch(() =>
+        Store.addNotification({
+          type: 'danger',
+          message: 'Что-то пошло не так',
+          container: 'top-right',
+          dismiss: {
+            duration: 3000,
+          },
+        })
+      )
+      .finally(() => setLoginLoading(false))
+  }
 
   return (
     <>
@@ -28,7 +68,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
         value={nickname}
       />
       <div className={styles.buttons}>
-        <Button onClick={login} className={styles.buttonsButton} disabled={!nickname || !gameId}>
+        <Button
+          onClick={login}
+          className={styles.buttonsButton}
+          disabled={!nickname || !gameId || nickname === battle?.data()?.player1.nickname}
+          loading={loginLoading}
+        >
           Войти
         </Button>
         <Button onClick={onClose} className={styles.buttonsButton}>
