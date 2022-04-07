@@ -4,12 +4,9 @@ import Button from '../Button/Button'
 import { copyToClipboard } from '../../utils/copyToClipboard'
 import Input from '../Input/Input'
 import { FirebaseService } from '../../utils/FirebaseService'
-import { Store } from 'react-notifications-component'
-import { useDocument } from 'react-firebase-hooks/firestore'
-import { doc } from 'firebase/firestore'
-import { FirebaseModel } from '../../models/FirebaseModel'
-import { DocumentReference } from 'firebase/firestore'
 import { StateContext } from '../../context/state.context'
+import { useBattle } from '../../hooks/useBattle'
+import { successNotification } from '../../utils/notifications'
 
 interface CreateGameFormProps {
   onClose: () => void
@@ -20,29 +17,14 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({ onClose }) => {
   const [gameId, setGameId] = React.useState('')
   const [nickname, setNickname] = React.useState('')
   const [createLoading, setCreateLoading] = React.useState(false)
-  const [battle] = useDocument<FirebaseModel>(
-    gameId
-      ? (doc(
-          FirebaseService.getFirestoreDb(),
-          FirebaseService.collectionName,
-          gameId
-        ) as DocumentReference<FirebaseModel>)
-      : undefined
-  )
+  const [battle] = useBattle(gameId)
 
   const createGame = async () => {
     setCreateLoading(true)
     FirebaseService.createBattle(nickname)
       .then(value => {
         setGameId(value.id)
-        Store.addNotification({
-          type: 'success',
-          message: 'Битва создана успешно',
-          container: 'top-right',
-          dismiss: {
-            duration: 3000,
-          },
-        })
+        successNotification('Битва создана успешно')
       })
       .catch(console.log)
       .finally(() => setCreateLoading(false))

@@ -7,10 +7,9 @@ import clsx from '../../utils/clsx'
 import RulesModal from './RulesModal/RulesModal'
 import { StateContext } from '../../context/state.context'
 import { FirebaseService } from '../../utils/FirebaseService'
-import { useDocument } from 'react-firebase-hooks/firestore'
-import { FirebaseModel } from '../../models/FirebaseModel'
-import { doc, DocumentReference } from 'firebase/firestore'
 import { Store } from 'react-notifications-component'
+import { useBattle } from '../../hooks/useBattle'
+import { successNotification } from '../../utils/notifications'
 
 export interface MapPositionedCoord {
   x: number
@@ -30,15 +29,7 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
   const { mapShips, positionedShips, setRulesModelOpened, setInitializerCellSideSize } =
     React.useContext(MyMapInitializerContext)
   const [readyLoading, setReadyLoading] = React.useState(false)
-  const [battle] = useDocument<FirebaseModel>(
-    game?.id
-      ? (doc(
-          FirebaseService.getFirestoreDb(),
-          FirebaseService.collectionName,
-          game.id
-        ) as DocumentReference<FirebaseModel>)
-      : undefined
-  )
+  const [battle] = useBattle(game?.id)
 
   const onReadyClick = () => {
     if (game) {
@@ -62,16 +53,9 @@ const MyMapInitializer: React.FC<MyMapInitializerProps> = () => {
       ((game?.player === 'player1' && data.player2.readyToPlay && !data.player1.readyToPlay) ||
         (game?.player === 'player2' && data.player1.readyToPlay && !data.player2.readyToPlay))
     ) {
-      Store.addNotification({
-        type: 'success',
-        message: `${
-          game?.player === 'player1' ? data.player2.nickname : data.player1.nickname
-        } готов к бою!`,
-        container: 'top-right',
-        dismiss: {
-          duration: 3000,
-        },
-      })
+      successNotification(
+        `${game?.player === 'player1' ? data.player2.nickname : data.player1.nickname} готов к бою!`
+      )
     }
   }, [battle])
 

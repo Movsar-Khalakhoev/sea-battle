@@ -3,11 +3,9 @@ import Input from '../Input/Input'
 import Button from '../Button/Button'
 import styles from './Registration.module.sass'
 import { FirebaseService } from '../../utils/FirebaseService'
-import { Store } from 'react-notifications-component'
-import { useDocument } from 'react-firebase-hooks/firestore'
-import { FirebaseModel } from '../../models/FirebaseModel'
-import { doc, DocumentReference } from 'firebase/firestore'
 import { StateContext } from '../../context/state.context'
+import { useBattle } from '../../hooks/useBattle'
+import { errorNotification, warningNotification } from '../../utils/notifications'
 
 interface LoginFormProps {
   onClose: () => void
@@ -18,23 +16,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
   const [gameId, setGameId] = React.useState('')
   const [nickname, setNickname] = React.useState('')
   const [loginLoading, setLoginLoading] = React.useState(false)
-  const [battle] = useDocument<FirebaseModel>(
-    gameId
-      ? (doc(
-          FirebaseService.getFirestoreDb(),
-          FirebaseService.collectionName,
-          gameId
-        ) as DocumentReference<FirebaseModel>)
-      : undefined
-  )
+  const [battle] = useBattle(gameId)
 
   React.useEffect(() => {
     if (nickname === battle?.data()?.player1.nickname) {
-      Store.addNotification({
-        type: 'warning',
-        message: 'Ники не могут быть похожи. Возьмите другой ник',
-        container: 'top-right',
-      })
+      warningNotification('Ники не могут быть похожи. Возьмите другой ник')
     }
   }, [nickname])
 
@@ -55,16 +41,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
     setLoginLoading(true)
     FirebaseService.joinToBattle(gameId, nickname)
       .then(() => console.log('joined to game'))
-      .catch(() =>
-        Store.addNotification({
-          type: 'danger',
-          message: 'Что-то пошло не так',
-          container: 'top-right',
-          dismiss: {
-            duration: 3000,
-          },
-        })
-      )
+      .catch(() => errorNotification('Что-то пошло не так'))
       .finally(() => setLoginLoading(false))
   }
 
