@@ -74,8 +74,12 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({ onClose }) => {
           onClick={createGame}
           className={styles.buttonsButton}
           disabled={!nickname || !!battle?.data()}
-          loading={createLoading || (battle?.data() && !battle?.data()?.player2.nickname) || true}
-          loadingLabel='Ожидание подключения игрока'
+          loading={createLoading || (battle?.data() && !battle?.data()?.player2.nickname)}
+          loadingLabel={
+            battle?.data() && !battle?.data()?.player2.nickname
+              ? 'Ожидание подключения игрока'
+              : 'Загрузка'
+          }
         >
           Создать
         </Button>
